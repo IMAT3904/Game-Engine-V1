@@ -8,7 +8,7 @@ namespace Engine {
 
 	void Log::start(SystemSignal init, ...)
 	{
-		spdlog::set_pattern("%^[%T]: %v%$");
+		spdlog::set_pattern("%^[%T]: %v%$"); //Start colour pattern- Time - Message - End colour pattern.
 		spdlog::set_level(spdlog::level::trace);
 
 		s_consoleLogger = spdlog::stdout_color_mt("Console");
