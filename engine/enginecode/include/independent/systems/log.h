@@ -33,8 +33,13 @@ namespace Engine
 
 		template<class ...Args>
 		static void release(Args&&... args);
+
+		template<class ...Args>
+		static void file(Args&&... args);
+
 	private:
 		static std::shared_ptr<spdlog::logger>s_consoleLogger; //!< Console logger.
+		static std::shared_ptr<spdlog::logger>s_fileLogger; //!< File logger.
 	};
 
 	template<class ...Args>
@@ -81,5 +86,11 @@ namespace Engine
 	static void Log::release(Args&&... args)
 	{
 		s_consoleLogger->trace(std::forward<Args>(args) ...);
+	}
+
+	template<class ...Args>
+	static void Log::file(Args&&... args)
+	{
+		if(s_fileLogger) s_fileLogger->trace(std::forward<Args>(args) ...);
 	}
 }

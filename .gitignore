@@ -11,3 +11,4 @@ build/
 *.sln
 vendor/glfw
 vendor/GoogleTest
+sandbox/log.txt

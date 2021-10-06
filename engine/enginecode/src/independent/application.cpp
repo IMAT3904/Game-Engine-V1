@@ -35,7 +35,7 @@ namespace Engine {
 	{
 		while (m_running)
 		{
-			Log::info("Hello World! {0} {1}", 42, "I am a string");
+			Log::trace("Hello World! {0} {1}", 42, "I am a string");
 		};
 	}
 
