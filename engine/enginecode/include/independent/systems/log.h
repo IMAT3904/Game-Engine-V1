@@ -13,8 +13,8 @@ namespace Engine
 	class Log : public System
 	{
 	public:
-		virtual void start(SystemSignal init = SystemSignal::None, ...); //!< Start the logger.
-		virtual void stop(SystemSignal close = SystemSignal::None, ...); //!< Stop the logger.
+		virtual void start(SystemSignal init = SystemSignal::None, ...) override; //!< Start the logger.
+		virtual void stop(SystemSignal close = SystemSignal::None, ...) override; //!< Stop the logger.
 
 		template<class ...Args>
 		static void debug(Args&&... args);
