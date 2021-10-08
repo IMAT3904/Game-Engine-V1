@@ -34,7 +34,7 @@ namespace Engine
 			return elapsed.count() / 1000.f;
 		}
 	private:
-		std::chrono::time_point<std::chrono::high_resolution_clock> m_startPoint;
-		std::chrono::time_point<std::chrono::high_resolution_clock> m_endPoint;
+		std::chrono::time_point<std::chrono::high_resolution_clock> m_startPoint; //!< Start timer for the timer
+		std::chrono::time_point<std::chrono::high_resolution_clock> m_endPoint; //!< End timer for the timer
 	};
 }
