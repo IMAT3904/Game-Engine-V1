@@ -5,6 +5,7 @@
 #include "systems/log.h"
 #include "timer.h"
 #include "events/events.h"
+#include "events/eventHandler.h"
 
 namespace Engine {
 
@@ -21,13 +22,18 @@ namespace Engine {
 #
 		std::shared_ptr<Log> m_logSystem; //!< Log System
 		std::shared_ptr<Timer> m_timer; //!< Timer
+		EventHandler m_handler;
+
+		bool onClose(WindowCloseEvent& e);
 	private:
 		static Application* s_instance; //!< Singleton instance of the application
 		bool m_running = true; //!< Is the application running?
+		
 	public:
 		virtual ~Application(); //!< Deconstructor
 		inline static Application& getInstance() { return *s_instance; } //!< Instance getter from singleton pattern
 		void run(); //!< Main loop
+		
 	};
 
 	// To be defined in users code

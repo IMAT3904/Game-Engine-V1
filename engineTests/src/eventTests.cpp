@@ -26,3 +26,26 @@ TEST(Events, ResizeConstructor)
 	EXPECT_EQ(type, Engine::EventType::WindowResize);
 
 }
+
+TEST(Events, MovedConstructor)
+{
+	Engine::e_WindowMoved e_WM(800, 600);
+
+	int32_t x1 = e_WM.getXPos();
+	int32_t y1 = e_WM.getYPos();
+
+	int32_t x2 = 800;
+	int32_t y2 = 600;
+
+	int32_t cat = e_WM.getCategoryFlags();
+	Engine::EventType type = e_WM.getEventType();
+	Engine::EventType staticType = e_WM.getStaticType();
+
+	EXPECT_EQ(x1, x2);
+	EXPECT_EQ(y1, y2);
+	EXPECT_EQ(cat, 1);
+	EXPECT_TRUE(e_WM.isInCateogory(Engine::EventCategory::EventCategoryWindow));
+	EXPECT_EQ(type, staticType);
+	EXPECT_EQ(type, Engine::EventType::WindowMoved);
+
+}
