@@ -12,6 +12,8 @@ namespace Engine
 
 	class GLFWWindowImpl : public Window
 	{
+	public:
+
 		GLFWWindowImpl(const WindowProperties& properties); //!< Window Constructor
 		virtual void init(const WindowProperties& properties) override; //!< initialise the window
 		virtual void close() override; //!< Close the window
