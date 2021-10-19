@@ -4,6 +4,10 @@
 #include "engine_pch.h"
 #include "core/application.h"
 
+#ifdef NG_PLATFORM_WINDOWS
+#include "platform/GLFW/GLFWSystem.h"
+#endif
+
 namespace Engine {
 	// Set static vars
 	Application* Application::s_instance = nullptr;
@@ -21,9 +25,17 @@ namespace Engine {
 		m_logSystem.reset(new Log);
 		m_logSystem->start();
 
-		// Reset Timer
+		// Start the windows System
+#ifdef NG_PLATFORM_WINDOWS
+		m_windowSystem.reset(new GLFWSystem);
+#endif
+		m_windowSystem->start();
+
+		// Start Timer
 		m_timer.reset(new ChronoTimer);
 		m_timer->start();
+
+		Window::create();
 
 		m_handler.setOnCloseCallback(std::bind(&Application::onClose, this, std::placeholders::_1));
 
@@ -43,6 +55,8 @@ namespace Engine {
 
 		//Stop log
 		m_logSystem->stop();
+
+		m_windowSystem->stop();
 	}
 
 
@@ -57,7 +71,7 @@ namespace Engine {
 			//Log::trace("FPS {0}", 1.0f / timestep);
 			accumTime += timestep;
 
-			if (accumTime > 1.5f)
+			if (accumTime > 1.f)
 			{
 				WindowCloseEvent close;
 
