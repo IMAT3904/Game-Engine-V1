@@ -29,6 +29,18 @@ namespace Engine {
 		EventHandler m_handler;
 
 		bool onClose(WindowCloseEvent& e);
+		bool onResize(WindowResizeEvent& e);
+		bool onFocus(e_WindowFocus& e);
+		bool onLostFocus(e_WindowLostFocus& e);
+		bool onMoved(e_WindowMoved& e);
+		
+		bool onKeyPressed(e_KeyPressed& e);
+		bool onKeyReleased(e_KeyReleased& e);
+
+		bool onButtonPressed(e_MouseButtonPressed& e);
+		bool onButtonReleased(e_MouseButtonReleased& e);
+		bool onMouseMoved(e_MouseMoved& e);
+		bool onMouseWheel(e_MouseScrolled& e);
 	private:
 		static Application* s_instance; //!< Singleton instance of the application
 		bool m_running = true; //!< Is the application running?

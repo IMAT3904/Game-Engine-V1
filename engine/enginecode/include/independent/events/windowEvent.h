@@ -35,7 +35,7 @@ namespace Engine
 	{
 	public:
 		e_WindowFocus() {}
-		static EventType getStaticType() {}
+		static EventType getStaticType() { return EventType::WindowFocus; }
 		virtual inline EventType getEventType() const override { return EventType::WindowFocus; }
 		virtual inline int32_t getCategoryFlags() const override { return EventCategoryWindow;  }
 	};
