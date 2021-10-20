@@ -34,8 +34,9 @@ namespace Engine {
 		// Start Timer
 		m_timer.reset(new ChronoTimer);
 		m_timer->start();
+		WindowProperties props("Game Engine V1", 1024, 800);
 
-		Window::create();
+		m_window.reset(Window::create(props));
 
 		m_handler.setOnCloseCallback(std::bind(&Application::onClose, this, std::placeholders::_1));
 
