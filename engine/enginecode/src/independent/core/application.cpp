@@ -150,8 +150,10 @@ namespace Engine {
 			if (accumTime > 1.f)
 			{
 				WindowCloseEvent close;
-
+				WindowResizeEvent r(82, 94);
+				auto& callback1 = m_window->getEventHandler().getOnResizeCallback();
 				auto& callback = m_window->getEventHandler().getOnCloseCallback();
+				callback1(r);
 				callback(close);
 			}
 			// Do frame stuff
