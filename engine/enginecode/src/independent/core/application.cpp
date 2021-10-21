@@ -3,6 +3,7 @@
 
 #include "engine_pch.h"
 #include "core/application.h"
+#include "platform/GLFW/GLFWCodes.h"
 
 #ifdef NG_PLATFORM_WINDOWS
 #include "platform/GLFW/GLFWSystem.h"
@@ -35,8 +36,8 @@ namespace Engine {
 		m_timer.reset(new ChronoTimer);
 		m_timer->start();
 		WindowProperties props("Game Engine V1", 1024, 800);
-
 		m_window.reset(Window::create(props));
+		InputPoller::setNative(&m_window);
 		//m_window->getEventHandler;
 
 		m_window->getEventHandler().setOnCloseCallback(std::bind(&Application::onClose, this, std::placeholders::_1));
@@ -67,7 +68,7 @@ namespace Engine {
 	bool Application::onResize(WindowResizeEvent & e)
 	{
 		e.handle(true);
-		Log::debug("Resize Works!!");
+		Log::debug("Resize Works!! {0} {1}", e.getWidth(), e.getHeight());
 		return e.handled();
 	}
 
@@ -142,6 +143,13 @@ namespace Engine {
 		float accumTime = 0.f;
 		while (m_running)
 		{
+			Log::debug("Mouse X: {0} - Y: {1}", InputPoller::getMX(), InputPoller::getMY());
+			//Log::debug(InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1));
+			//Log::debug(InputPoller::isKeyPressed());
+			if (InputPoller::isKeyPressed(NG_KEY_W))
+			{
+				Log::debug("Space Key Pressed!");
+			}
 			timestep = m_timer->getElapsedTime();
 			m_timer->reset();
 			//Log::trace("FPS {0}", 1.0f / timestep);
@@ -149,12 +157,12 @@ namespace Engine {
 
 			if (accumTime > 1.f)
 			{
-				WindowCloseEvent close;
-				WindowResizeEvent r(82, 94);
+				/*WindowCloseEvent close;
+				WindowResizeEvent r(820, 940);
 				auto& callback1 = m_window->getEventHandler().getOnResizeCallback();
 				auto& callback = m_window->getEventHandler().getOnCloseCallback();
 				callback1(r);
-				callback(close);
+				callback(close);*/
 			}
 			// Do frame stuff
 
