@@ -1,37 +1,42 @@
 #include "engine_pch.h"
 #include "platform/GLFW/GLFWInputPoller.h"
 #include "platform/GLFW/GLFWCodes.h"
+#include <GLFW/glfw3.h>
 
+namespace Engine {
 
-	GLFWwindow* Engine::GLFWInputPoller::s_window = nullptr;
+	GLFWwindow* GLFWInputPoller::s_window = nullptr;
 
-	bool Engine::GLFWInputPoller::isKeyPressed(int32_t keyCode)
+	bool GLFWInputPoller::isKeyPressed(int32_t keyCode)
 	{
-		return glfwGetKey(s_window, keyCode);
-		/*if (s_window)
+		//return glfwGetKey(s_window, keyCode);
+		//return(&s_window);
+		if (s_window)
 		{
 			auto state = glfwGetKey(s_window, keyCode);
-			return state == NG_KEY_PRESS || state == NG_KEY_REPEAT;
+			return state == GLFW_PRESS || state == GLFW_REPEAT;
 		}
-		return false;*/
+		else return false;
 	}
 
-	bool Engine::GLFWInputPoller::isMouseButtonPressed(int32_t mouseButton)
+	bool GLFWInputPoller::isMouseButtonPressed(int32_t mouseButton)
 	{
 		if (s_window)
 		{
-			auto state = glfwGetKey(s_window, mouseButton);
-			return state == NG_BUTTON_PRESS || state == NG_BUTTON_REPEAT;
+			auto state = glfwGetMouseButton(s_window, mouseButton);
+			return state == GLFW_PRESS;
 		}
 		return false;
 	}
 
-	glm::vec2 Engine::GLFWInputPoller::getMousePosition()
+	glm::vec2 GLFWInputPoller::getMousePosition()
 	{
 		double x, y;
 		if (s_window)
 		{
 			glfwGetCursorPos(s_window, &x, &y);
 			return glm::vec2(x, y);
-		} else return glm::vec2(-1, -1);
+		}
+		else return glm::vec2(-1, -1);
 	}
+}

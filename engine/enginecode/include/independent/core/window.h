@@ -38,7 +38,7 @@ namespace Engine
 		inline EventHandler& getEventHandler() { return m_handler; }
 
 		static Window* create(const WindowProperties& properties = WindowProperties());
-	private:
+	protected:
 		EventHandler m_handler; //!< Event Handler
 		//std::shared_ptr<GraphicsContext> m_graphicsContext;
 	};

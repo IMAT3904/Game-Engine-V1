@@ -1,4 +1,4 @@
-/** \file GLFWWindowImpl.h */
+/** \file GLFWWindoooooowImpl.h */
 #pragma once
 
 #include "core/window.h"

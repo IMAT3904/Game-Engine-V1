@@ -4,6 +4,7 @@
 #include "engine_pch.h"
 #include "core/application.h"
 #include "platform/GLFW/GLFWCodes.h"
+#include <GLFW/glfw3.h>
 
 #ifdef NG_PLATFORM_WINDOWS
 #include "platform/GLFW/GLFWSystem.h"
@@ -35,9 +36,9 @@ namespace Engine {
 		// Start Timer
 		m_timer.reset(new ChronoTimer);
 		m_timer->start();
-		WindowProperties props("Game Engine V1", 1024, 800);
+		WindowProperties props("Game Engine V1", 820, 420);
 		m_window.reset(Window::create(props));
-		InputPoller::setNative(&m_window);
+		InputPoller::setNative(m_window->getNativeWindow());
 		//m_window->getEventHandler;
 
 		m_window->getEventHandler().setOnCloseCallback(std::bind(&Application::onClose, this, std::placeholders::_1));
@@ -60,33 +61,36 @@ namespace Engine {
 	bool Application::onClose(WindowCloseEvent & e)
 	{
 		e.handle(true);
-		Log::debug("Window Close Works!!");
+		Log::info("Window Close Works!!");
 		m_running = false;
 		return e.handled();
 	}
 
-	bool Application::onResize(WindowResizeEvent & e)
+	bool Application::onResize(WindowResizeEvent &e)
 	{
 		e.handle(true);
-		Log::debug("Resize Works!! {0} {1}", e.getWidth(), e.getHeight());
+		Log::info("Resize Works!! {0} {1}", e.getWidth(), e.getHeight());
 		return e.handled();
 	}
 
 	bool Application::onFocus(e_WindowFocus & e)
 	{
 		e.handle(true);
+		Log::info("GAME RESUMED!");
 		return e.handled();
 	}
 
 	bool Application::onLostFocus(e_WindowLostFocus & e)
 	{
 		e.handle(true);
+		Log::info("GAME PAUSED!");
 		return e.handled();
 	}
 
 	bool Application::onMoved(e_WindowMoved & e)
 	{
 		e.handle(true);
+		Log::info("Window Moved! - {0} - {1}", e.getXPos(), e.getYPos());
 		return e.handled();
 	}
 
@@ -143,17 +147,23 @@ namespace Engine {
 		float accumTime = 0.f;
 		while (m_running)
 		{
-			Log::debug("Mouse X: {0} - Y: {1}", InputPoller::getMX(), InputPoller::getMY());
-			//Log::debug(InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1));
-			//Log::debug(InputPoller::isKeyPressed());
+			m_window->onUpdate(timestep);
+			//Log::debug(InputPoller::isKeyPressed(NG_KEY_W));
 			if (InputPoller::isKeyPressed(NG_KEY_W))
 			{
-				Log::debug("Space Key Pressed!");
+				Log::debug("W Pressed");
+			}
+			else if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
+			{
+				Log::debug("Mouse 1 Pressed");
 			}
 			timestep = m_timer->getElapsedTime();
 			m_timer->reset();
 			//Log::trace("FPS {0}", 1.0f / timestep);
 			accumTime += timestep;
+
+			//Log::debug("Mouse X: {0} - Y: {1}", InputPoller::getMX(), InputPoller::getMY());
+			//Log::debug(InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1));
 
 			if (accumTime > 1.f)
 			{

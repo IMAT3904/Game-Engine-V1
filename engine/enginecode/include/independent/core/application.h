@@ -27,7 +27,6 @@ namespace Engine {
 		std::shared_ptr<System> m_windowSystem; //!< Windows System
 
 		std::shared_ptr<Window> m_window; //!< Window
-		EventHandler m_handler;
 
 		bool onClose(WindowCloseEvent& e);
 		bool onResize(WindowResizeEvent& e);

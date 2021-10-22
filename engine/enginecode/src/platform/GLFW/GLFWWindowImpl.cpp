@@ -33,6 +33,51 @@ namespace Engine
 		{
 			m_native = glfwCreateWindow(m_props.width, m_props.height, m_props.title, nullptr, nullptr);
 		}
+
+		glfwSetWindowUserPointer(m_native, static_cast<void*>(&m_handler));
+
+		glfwSetWindowCloseCallback(m_native,
+			[](GLFWwindow* window) 
+			{
+				WindowCloseEvent e;
+				EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+				auto& callback = handler->getOnCloseCallback();
+				callback(e);
+			}
+		);
+
+		glfwSetWindowSizeCallback(m_native,
+			[](GLFWwindow* window, int w, int h)
+
+		{
+			WindowResizeEvent e(w, h);
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& callback = handler->getOnResizeCallback();
+			callback(e);
+		}
+		);
+
+		glfwSetWindowPosCallback(m_native,
+			[](GLFWwindow* window, int x, int y)
+
+		{
+			e_WindowMoved e(x, y);
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& callback = handler->getOnWindowMovedCallback();
+			callback(e);
+		}
+		);
+
+		/*glfwSetWindowFocusCallback(
+			[](GLFWwindow* window)
+		{
+			e_WindowFocus e();
+			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+			auto& callback = handler->getOnFocusCallback();
+			callback(e);
+
+		}
+		);*/
 	}
 
 	void GLFWWindowImpl::close()
@@ -43,6 +88,7 @@ namespace Engine
 	void GLFWWindowImpl::onUpdate(float timestep)
 	{
 		glfwPollEvents();
+		
 	}
 
 	void GLFWWindowImpl::setVSync(bool VSync)
