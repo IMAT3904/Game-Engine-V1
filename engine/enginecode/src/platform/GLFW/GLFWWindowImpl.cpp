@@ -2,6 +2,7 @@
 
 #include "engine_pch.h"
 #include "platform/GLFW/GLFWWindowImpl.h"
+#include "platform/GLFW/GLFW_OpenGL_GC.h"
 #include "systems/log.h"
 
 namespace Engine
@@ -33,6 +34,9 @@ namespace Engine
 		{
 			m_native = glfwCreateWindow(m_props.width, m_props.height, m_props.title, nullptr, nullptr);
 		}
+
+		m_graphicsContext.reset(new GLFW_OpenGL_GC(m_native));
+		m_graphicsContext->init();
 
 		glfwSetWindowUserPointer(m_native, static_cast<void*>(&m_handler));
 
@@ -68,16 +72,27 @@ namespace Engine
 		}
 		);
 
-		/*glfwSetWindowFocusCallback(
-			[](GLFWwindow* window)
+		glfwSetWindowFocusCallback(m_native,
+			[](GLFWwindow* window, int focused)
 		{
-			e_WindowFocus e();
-			EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
-			auto& callback = handler->getOnFocusCallback();
-			callback(e);
+			if (focused)
+			{
+				e_WindowFocus e;
+				EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+				auto& callback = handler->getOnFocusCallback();
+				callback(e);
+			}
+			else if (!focused)
+			{
+				e_WindowLostFocus e;
+				EventHandler* handler = static_cast<EventHandler*>(glfwGetWindowUserPointer(window));
+				auto& callback = handler->getOnLostFocusCallback();
+				callback(e);
+			}
 
 		}
-		);*/
+
+		);
 	}
 
 	void GLFWWindowImpl::close()
@@ -88,6 +103,7 @@ namespace Engine
 	void GLFWWindowImpl::onUpdate(float timestep)
 	{
 		glfwPollEvents();
+		m_graphicsContext->swapBuffers();
 		
 	}
 

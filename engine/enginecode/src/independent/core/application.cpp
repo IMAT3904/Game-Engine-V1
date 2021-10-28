@@ -2,6 +2,10 @@
 */
 
 #include "engine_pch.h"
+
+// Temp
+#include <glad/glad.h>
+
 #include "core/application.h"
 #include "platform/GLFW/GLFWCodes.h"
 #include <GLFW/glfw3.h>
@@ -145,8 +149,11 @@ namespace Engine {
 	{
 		float timestep = 0.0f;
 		float accumTime = 0.f;
+
+		glClearColor(1.0f, 0.f, 1.f, 0.f);
 		while (m_running)
 		{
+			glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 			m_window->onUpdate(timestep);
 			//Log::debug(InputPoller::isKeyPressed(NG_KEY_W));
 			if (InputPoller::isKeyPressed(NG_KEY_W))
