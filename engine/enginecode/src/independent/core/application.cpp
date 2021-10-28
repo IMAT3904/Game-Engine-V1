@@ -65,7 +65,7 @@ namespace Engine {
 	bool Application::onClose(WindowCloseEvent & e)
 	{
 		e.handle(true);
-		Log::info("Window Close Works!!");
+		//Log::info("Window Close Works!!");
 		m_running = false;
 		return e.handled();
 	}
@@ -73,7 +73,7 @@ namespace Engine {
 	bool Application::onResize(WindowResizeEvent &e)
 	{
 		e.handle(true);
-		Log::info("Resize Works!! {0} {1}", e.getWidth(), e.getHeight());
+		//Log::info("Resize Works!! {0} {1}", e.getWidth(), e.getHeight());
 		return e.handled();
 	}
 
@@ -94,7 +94,7 @@ namespace Engine {
 	bool Application::onMoved(e_WindowMoved & e)
 	{
 		e.handle(true);
-		Log::info("Window Moved! - {0} - {1}", e.getXPos(), e.getYPos());
+		//Log::info("Window Moved! - {0} - {1}", e.getXPos(), e.getYPos());
 		return e.handled();
 	}
 
@@ -149,21 +149,21 @@ namespace Engine {
 	{
 		float timestep = 0.0f;
 		float accumTime = 0.f;
-
+		glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.f, 1.f, 0.f);
 		while (m_running)
 		{
 			glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 			m_window->onUpdate(timestep);
 			//Log::debug(InputPoller::isKeyPressed(NG_KEY_W));
-			if (InputPoller::isKeyPressed(NG_KEY_W))
+			/*if (InputPoller::isKeyPressed(NG_KEY_W))
 			{
 				Log::debug("W Pressed");
 			}
 			else if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
 			{
 				Log::debug("Mouse 1 Pressed");
-			}
+			}*/
 			timestep = m_timer->getElapsedTime();
 			m_timer->reset();
 			//Log::trace("FPS {0}", 1.0f / timestep);
