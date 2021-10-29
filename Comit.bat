@@ -1,4 +1,3 @@
-@echo off
 cls
 echo [102;93m Github Commit [0m
 echo ^<Console^> [92mCommit to github starting...[0m
