@@ -14,6 +14,9 @@
 #include "platform/GLFW/GLFWSystem.h"
 #endif
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -48,6 +51,7 @@ namespace Engine {
 		InputPoller::setNative(m_window->getNativeWindow());
 		//m_window->getEventHandler;
 
+#pragma region setCallback
 		m_window->getEventHandler().setOnCloseCallback(std::bind(&Application::onClose, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnResizeCallback(std::bind(&Application::onResize, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnFocusCallback(std::bind(&Application::onFocus, this, std::placeholders::_1));
@@ -61,7 +65,7 @@ namespace Engine {
 		m_window->getEventHandler().setOnButtonReleasedCallback(std::bind(&Application::onButtonReleased, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnMouseMovedCallback(std::bind(&Application::onMouseMoved, this, std::placeholders::_1));
 		m_window->getEventHandler().setOnMouseWheelCallback(std::bind(&Application::onMouseWheel, this, std::placeholders::_1));
-		
+#pragma endregion
 		m_timer->reset();
 	}
 
@@ -555,13 +559,24 @@ namespace Engine {
 #pragma endregion
 
 		float timestep = 0.0f;
-		float accumTime = 0.f;
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 0.f, 1.f, 0.f);
+
+		glm::mat4 view = glm::lookAt(
+			glm::vec3(0.f, 0.f, 0.f),
+			glm::vec3(0.f, 0.f, -1.f),
+			glm::vec3(0.f, 1.f, 0.f)
+		);
+		glm::mat4 projection = glm::perspective(glm::radians(45.f), 1024.f / 800.f, 0.1f, 100.f);
+
+		glm::mat4 models[3];
+		models[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.f, 0.f, -6.f));
+		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(0.f, 0.f, -6.f));
+		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(2.f, 0.f, -6.f));
+
+
 		while (m_running)
 		{
-			glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-			m_window->onUpdate(timestep);
 			//Log::debug(InputPoller::isKeyPressed(NG_KEY_W));
 			/*if (InputPoller::isKeyPressed(NG_KEY_W))
 			{
@@ -574,20 +589,68 @@ namespace Engine {
 			timestep = m_timer->getElapsedTime();
 			m_timer->reset();
 			//Log::trace("FPS {0}", 1.0f / timestep);
-			accumTime += timestep;
-
-
-			if (accumTime > 1.f)
-			{
-				/*WindowCloseEvent close;
-				WindowResizeEvent r(820, 940);
-				auto& callback1 = m_window->getEventHandler().getOnResizeCallback();
-				auto& callback = m_window->getEventHandler().getOnCloseCallback();
-				callback1(r);
-				callback(close);*/
-			}
 			// Do frame stuff
 
+			for (auto& model : models) { model = glm::rotate(model, timestep, glm::vec3(0.f, 1.0, 0.f)); }
+
+			// Do frame stuff
+#pragma region Render
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glUseProgram(FCprogram);
+			glBindVertexArray(pyramidVAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
+
+			GLuint uniformLocation;
+
+			uniformLocation = glGetUniformLocation(FCprogram, "u_model");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[0])); // Must include <glm/gtc/type_ptr.hpp>
+
+			uniformLocation = glGetUniformLocation(FCprogram, "u_view");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+			uniformLocation = glGetUniformLocation(FCprogram, "u_projection");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
+			glDrawElements(GL_TRIANGLES, 3 * 6, GL_UNSIGNED_INT, nullptr);
+
+			glUseProgram(TPprogram);
+			glBindVertexArray(cubeVAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
+
+
+			uniformLocation = glGetUniformLocation(TPprogram, "u_model");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[1]));
+
+			uniformLocation = glGetUniformLocation(TPprogram, "u_view");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+			uniformLocation = glGetUniformLocation(TPprogram, "u_projection");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
+			uniformLocation = glGetUniformLocation(TPprogram, "u_lightColour");
+			glUniform3f(uniformLocation, 1.f, 1.f, 1.f);
+
+			uniformLocation = glGetUniformLocation(TPprogram, "u_lightPos");
+			glUniform3f(uniformLocation, 1.f, 4.f, 6.f);
+
+			uniformLocation = glGetUniformLocation(TPprogram, "u_viewPos");
+			glUniform3f(uniformLocation, 0.f, 0.f, 0.f);
+
+			glBindTexture(GL_TEXTURE_2D, letterTexture);
+			uniformLocation = glGetUniformLocation(TPprogram, "u_texData");
+			glUniform1i(uniformLocation, 0);
+
+			glDrawElements(GL_TRIANGLES, 3 * 12, GL_UNSIGNED_INT, nullptr);
+
+			uniformLocation = glGetUniformLocation(TPprogram, "u_model");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[2]));
+
+			glBindTexture(GL_TEXTURE_2D, numberTexture);
+
+			glDrawElements(GL_TRIANGLES, 3 * 12, GL_UNSIGNED_INT, nullptr);
+#pragma endregion
+			m_window->onUpdate(timestep);
 		};
 
 		glDeleteBuffers(1, &cubeVBO);
@@ -598,8 +661,8 @@ namespace Engine {
 		glDeleteVertexArrays(1, &pyramidVAO);
 		glDeleteBuffers(1, &pyramidIBO);
 
-		glDeleteShader(FCprogram);
-		glDeleteShader(TPprogram);
+		glDeleteProgram(FCprogram);
+		glDeleteProgram(TPprogram);
 
 		glDeleteTextures(1, &letterTexture);
 		glDeleteTextures(1, &numberTexture);
