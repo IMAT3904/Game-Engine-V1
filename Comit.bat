@@ -5,7 +5,6 @@ echo ^<Console^> [92mCommit to github starting...[0m
 set /p message= [91mEnter Message: 
 git add .
 git commit -m "%message%"
-SET c = git push
-if (%c%) echo [92mCommit Successful!![0m
-else echo [31mCommit Unsuccessful!![0m
+echo git push
+echo [92mCommit Finished!![0m
 pause
