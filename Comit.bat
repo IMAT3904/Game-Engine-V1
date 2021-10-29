@@ -7,5 +7,6 @@ echo [92m
 git add .
 git commit -m "%message%"
 git push
+echo.
 echo [92mCommit Finished!![0m
 pause
