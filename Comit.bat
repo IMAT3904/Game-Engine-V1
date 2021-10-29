@@ -1,7 +1,10 @@
 @echo off
 cls
-set /p message=Enter Message: 
+echo [102;93m Github Commit [0m
+echo ^<Console^> [92mCommit to github starting...[0m
+set /p message= [91mEnter Message: 
 git add .
 git commit -m "%message%"
-git push
+if(git push) echo [92mCommit Successful!![0m
+else echo [31mCommit Unsuccessful!![0m
 pause
