@@ -590,6 +590,42 @@ namespace Engine {
 			m_timer->reset();
 			//Log::trace("FPS {0}", 1.0f / timestep);
 			// Do frame stuff
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glUseProgram(FCprogram);
+
+			glBindVertexArray(pyramidVAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
+
+			GLuint location;
+
+			location = glGetUniformLocation(FCprogram, "u_projection");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
+
+			location = glGetUniformLocation(FCprogram, "u_view");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
+
+			location = glGetUniformLocation(FCprogram, "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
+
+			location = glGetUniformLocation(FCprogram, "u_lightColour");
+			glUniform3f(location, 1.0f, 1.0f, 1.0f);
+
+			location = glGetUniformLocation(FCprogram, "u_lightPosition");
+			glUniform3f(location, 1.0f, 4.0f, 6.0f);
+
+			location = glGetUniformLocation(FCprogram, "u_viewPosition");
+			glUniform3f(location, 0.0f, 0.0f, 0.0f);
+
+			location = glGetUniformLocation(FCprogram, "u_texData");
+			glUniform1i(location, 0);
+
+			glBindTexture(GL_TEXTURE_2D, letterTexture);
+
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+
+			location = glGetUniformLocation(TPprogram, "u_model");
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
 
 			for (auto& model : models) { model = glm::rotate(model, timestep, glm::vec3(0.f, 1.0, 0.f)); }
 
