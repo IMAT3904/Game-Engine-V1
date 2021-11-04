@@ -47,8 +47,9 @@ namespace Engine {
 		// Start Timer
 		m_timer.reset(new ChronoTimer);
 		m_timer->start();
-		WindowProperties props("Game Engine V1", 820, 420);
+		WindowProperties props("Game Engine V1", 1024, 800, false);
 		m_window.reset(Window::create(props));
+		m_window->setVSync(false);
 		InputPoller::setNative(m_window->getNativeWindow());
 		//m_window->getEventHandler;
 
@@ -269,43 +270,6 @@ namespace Engine {
 		pyramidIBO.reset(new OpenGLIndexBuffer(pyramidIndices, 3 * 12));
 		pyramidVAO->setIndexBuffer(pyramidIBO);
 
-		/*uint32_t cubeVAO, cubeVBO, cubeIBO;
-
-		glCreateVertexArrays(1, &cubeVAO);
-		glBindVertexArray(cubeVAO);
-
-		glCreateBuffers(1, &cubeVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-
-		glCreateBuffers(1, &cubeIBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeIndices), cubeIndices, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // position
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // Normal
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // UV co-ords*/
-
-		/*uint32_t pyramidVAO, pyramidVBO, pyramidIBO;
-
-		glCreateVertexArrays(1, &pyramidVAO);
-		glBindVertexArray(pyramidVAO);
-
-		glCreateBuffers(1, &pyramidVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, pyramidVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidVertices), pyramidVertices, GL_STATIC_DRAW);
-
-		glCreateBuffers(1, &pyramidIBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pyramidIndices), pyramidIndices, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0); // Position
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // Colour*/
 #pragma endregion
 
 #pragma region SHADERS
@@ -545,10 +509,6 @@ namespace Engine {
 
 		int width, height, channels;
 
-		/* Need to add
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-*/
 		unsigned char *data = stbi_load("assets/textures/letterCube.png", &width, &height, &channels, 0);
 		if (data)
 		{
@@ -606,55 +566,11 @@ namespace Engine {
 
 		while (m_running)
 		{
-			//Log::debug(InputPoller::isKeyPressed(NG_KEY_W));
-			/*if (InputPoller::isKeyPressed(NG_KEY_W))
-			{
-				Log::debug("W Pressed");
-			}
-			else if (InputPoller::isMouseButtonPressed(NG_MOUSE_BUTTON_1))
-			{
-				Log::debug("Mouse 1 Pressed");
-			}*/
 			timestep = m_timer->getElapsedTime();
 			m_timer->reset();
-			//Log::trace("FPS {0}", 1.0f / timestep);
+			Log::trace("FPS {0}", 1.0f / timestep);
+
 			// Do frame stuff
-			/*
-			glUseProgram(FCprogram);
-
-			glBindVertexArray(pyramidVAO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO);
-
-			GLuint location;
-
-			location = glGetUniformLocation(FCprogram, "u_projection");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
-
-			location = glGetUniformLocation(FCprogram, "u_view");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(view));
-
-			location = glGetUniformLocation(FCprogram, "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));
-
-			location = glGetUniformLocation(FCprogram, "u_lightColour");
-			glUniform3f(location, 1.0f, 1.0f, 1.0f);
-
-			location = glGetUniformLocation(FCprogram, "u_lightPosition");
-			glUniform3f(location, 1.0f, 4.0f, 6.0f);
-
-			location = glGetUniformLocation(FCprogram, "u_viewPosition");
-			glUniform3f(location, 0.0f, 0.0f, 0.0f);
-
-			location = glGetUniformLocation(FCprogram, "u_texData");
-			glUniform1i(location, 0);
-
-			glBindTexture(GL_TEXTURE_2D, letterTexture);
-
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-
-			location = glGetUniformLocation(TPprogram, "u_model");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(models[1]));*/
-
 			for (auto& model : models) { model = glm::rotate(model, timestep, glm::vec3(0.f, 1.0, 0.f)); }
 
 			// Do frame stuff
