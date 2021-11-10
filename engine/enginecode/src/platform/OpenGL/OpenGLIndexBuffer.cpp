@@ -7,7 +7,7 @@
 namespace Engine 
 {
 
-	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t * indices, uint32_t count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t * indices, uint32_t count) : m_count(count)
 	{
 		glCreateBuffers(1, &m_OpenGL_ID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_OpenGL_ID);

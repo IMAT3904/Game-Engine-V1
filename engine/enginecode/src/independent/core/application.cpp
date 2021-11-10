@@ -338,7 +338,7 @@ namespace Engine {
 
 		float timestep = 0.0f;
 		glEnable(GL_DEPTH_TEST);
-		glClearColor(1.0f, 0.f, 1.f, 0.f);
+		glClearColor(0.3f, 0.4f, 1.f, 1.0f);
 
 		glm::mat4 view = glm::lookAt(
 			glm::vec3(0.f, 0.f, 0.f),
@@ -360,7 +360,7 @@ namespace Engine {
 			Log::trace("FPS {0}", 1.0f / timestep);
 
 			// Do frame stuff
-			for (auto& model : models) { model = glm::rotate(model, timestep, glm::vec3(0.f, 1.0, 0.f)); }
+			for (auto& model : models) { model = glm::rotate(model, timestep / 2, glm::vec3(0.f, 1.0f, 0.f)); }
 
 			// Do frame stuff
 #pragma region Render
@@ -381,7 +381,7 @@ namespace Engine {
 			uniformLocation = glGetUniformLocation(FCShader->getID(), "u_projection");
 			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
 
-			glDrawElements(GL_TRIANGLES, 3 * 12, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
 			glUseProgram(TPShader->getID());
 
@@ -410,14 +410,14 @@ namespace Engine {
 			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_texData");
 			glUniform1i(uniformLocation, 0);
 
-			glDrawElements(GL_TRIANGLES, 3 * 12, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 	
 			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_model");
 			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[2]));
 
 			glBindTexture(GL_TEXTURE_2D, numberTexture);
 
-			glDrawElements(GL_TRIANGLES, 3 * 12, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 #pragma endregion
 			m_window->onUpdate(timestep);
 		};
