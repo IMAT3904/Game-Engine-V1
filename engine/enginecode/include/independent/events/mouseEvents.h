@@ -44,7 +44,7 @@ namespace Engine {
 	class e_MouseButtonPressed : public e_Mouse
 	{
 	public:
-		e_MouseButtonPressed(int32_t button) : m_button(button) {}
+		e_MouseButtonPressed(int32_t button) : m_button(button) {  }
 
 		static EventType getStaticType() { return EventType::MouseButtonPressed;  }
 		virtual EventType getEventType() const override { return getStaticType();  }
