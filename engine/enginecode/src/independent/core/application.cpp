@@ -5,10 +5,11 @@
 
 // Temp
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #include "core/application.h"
 #include "platform/GLFW/GLFWCodes.h"
-#include <GLFW/glfw3.h>
+
 
 #ifdef NG_PLATFORM_WINDOWS
 #include "platform/GLFW/GLFWSystem.h"
@@ -16,10 +17,13 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #include "platform/OpenGL/OpenGLVertexArray.h"
 #include "platform/OpenGL/OpenGLShader.h"
 #include "platform/OpenGL/OpenGLTexture.h"
+
 #include "rendering/subTexture.h"
+#include "rendering/indexBuffer.h"
 
 
 
@@ -175,8 +179,8 @@ namespace Engine {
 		float cubeVertices[8 * 24] = {
 			//	 <------ Pos ------>  <--- normal --->  <-- UV -->
 				 0.5f,  1.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.f),   letterCube.transformV(0.f),
-				 0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.f),   letterCube.transformV(0.5f),
-				-0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.33f), letterCube.transformV(0.5f),
+				 0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,   letterCube.transformU(0.f),   letterCube.transformV(0.5f),
+				-0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,   letterCube.transformU(0.33f), letterCube.transformV(0.5f),
 				-0.5f,  1.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.33f), letterCube.transformV(0.f),
 				-0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.33f), letterCube.transformV(0.5f),
 				 0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
@@ -186,18 +190,18 @@ namespace Engine {
 				 0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.f),
 				 0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
 				-0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  letterCube.transformU(1.0f),  letterCube.transformV(0.5f),
-				 0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  letterCube.transformU(0.f),   letterCube.transformV(0.5f),
-				 0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  letterCube.transformU(0.f),   letterCube.transformV(1.0f),
-				-0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  letterCube.transformU(0.33f), letterCube.transformV(1.0f),
-				-0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  letterCube.transformU(0.3f),  letterCube.transformV(0.5f),
-				-0.5f,  0.5f, 0.5f,  -1.f,  0.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
-				-0.5f,  0.5f, -0.5f, -1.f,  0.f,  0.f,  letterCube.transformU(0.33f), letterCube.transformV(0.5f),
-				-0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,  letterCube.transformU(0.33f), letterCube.transformV(1.0f),
-				-0.5f, -0.5f, 0.5f,  -1.f,  0.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(1.0f),
-				 0.5f, -0.5f, -0.5f,  1.f,  0.f,  0.f,  letterCube.transformU(1.0f),  letterCube.transformV(1.0f),
-				 0.5f,  0.5f, -0.5f,  1.f,  0.f,  0.f,  letterCube.transformU(1.0f),  letterCube.transformV(0.5f),
-				 0.5f,  0.5f, 0.5f,   1.f,  0.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
-				 0.5f, -0.5f, 0.5f,   1.f,  0.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(1.0f)
+				 0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  numberCube.transformU(0.f),   numberCube.transformV(0.5f),
+				 0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  numberCube.transformU(0.f),   numberCube.transformV(1.0f),
+				-0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
+				-0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  numberCube.transformU(0.3f),  numberCube.transformV(0.5f),
+				-0.5f,  0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(0.5f),
+				-0.5f,  0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(0.5f),
+				-0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
+				-0.5f, -0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(1.0f),
+				 0.5f, -0.5f, -0.5f,  1.f,  0.f,  0.f,  numberCube.transformU(1.0f),  numberCube.transformV(1.0f),
+				 0.5f,  0.5f, -0.5f,  1.f,  0.f,  0.f,  numberCube.transformU(1.0f),  numberCube.transformV(0.5f),
+				 0.5f,  0.5f, 0.5f,   1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(0.5f),
+				 0.5f, -0.5f, 0.5f,   1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(1.0f)
 		};
 
 		float pyramidVertices[6 * 16] = {
@@ -253,11 +257,11 @@ namespace Engine {
 #pragma region GL_BUFFERS
 		std::shared_ptr<OpenGLVertexArray> cubeVAO;
 		std::shared_ptr<OpenGLVertexBuffer> cubeVBO;
-		std::shared_ptr<OpenGLIndexBuffer> cubeIBO;
+		std::shared_ptr<IndexBuffer> cubeIBO;
 
 		std::shared_ptr<OpenGLVertexArray> pyramidVAO;
 		std::shared_ptr<OpenGLVertexBuffer> pyramidVBO;
-		std::shared_ptr<OpenGLIndexBuffer> pyramidIBO;
+		std::shared_ptr<IndexBuffer> pyramidIBO;
 
 		cubeVAO.reset(new OpenGLVertexArray);
 
@@ -266,7 +270,7 @@ namespace Engine {
 
 		cubeVAO->addVertextBuffer(cubeVBO);
 
-		cubeIBO.reset(new OpenGLIndexBuffer(cubeIndices, 36));
+		cubeIBO.reset(IndexBuffer::create(cubeIndices, 36));
 		cubeVAO->setIndexBuffer(cubeIBO);
 
 		pyramidVAO.reset(new OpenGLVertexArray);
@@ -274,7 +278,7 @@ namespace Engine {
 		BufferLayout pyramidLayout = { ShaderDataType::Float3, ShaderDataType::Float3 };
 		pyramidVBO.reset(new OpenGLVertexBuffer(pyramidVertices, sizeof(pyramidVertices), pyramidLayout));
 
-		pyramidIBO.reset(new OpenGLIndexBuffer(pyramidIndices, 18));
+		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
 
 		pyramidVAO->addVertextBuffer(pyramidVBO);
 
