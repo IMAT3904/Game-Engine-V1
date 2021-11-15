@@ -329,16 +329,19 @@ namespace Engine {
 			glBindVertexArray(pyramidVAO->getRenderID());
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
 
-			GLuint uniformLocation;
+			//GLuint uniformLocation;
 
-			uniformLocation = glGetUniformLocation(FCShader->getID(), "u_model");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[0])); // Must include <glm/gtc/type_ptr.hpp>
-
-			uniformLocation = glGetUniformLocation(FCShader->getID(), "u_view");
+			//uniformLocation = glGetUniformLocation(FCShader->getID(), "u_model");
+			//glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[0])); // Must include <glm/gtc/type_ptr.hpp>
+			FCShader->uploadMat4("u_model", models[0]);
+			FCShader->uploadMat4("u_view", view);
+			FCShader->uploadMat4("u_projection", projection);
+			
+			/*uniformLocation = glGetUniformLocation(FCShader->getID(), "u_view");
 			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(view));
 
 			uniformLocation = glGetUniformLocation(FCShader->getID(), "u_projection");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));*/
 
 			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -347,33 +350,44 @@ namespace Engine {
 			glBindVertexArray(cubeVAO->getRenderID());
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
 
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_model");
+			TPShader->uploadMat4("u_model", models[1]);
+			TPShader->uploadMat4("u_view", view);
+			TPShader->uploadMat4("u_projection", projection);
+
+			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_model");
 			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[1]));
 
 			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_view");
 			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(view));
 
 			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_projection");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));*/
 
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_lightColour");
-			glUniform3f(uniformLocation, 1.f, 1.f, 1.f);
+			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_lightColour");
+			glUniform3f(uniformLocation, 1.f, 1.f, 1.f);*/
+			TPShader->uploadFloat3("u_lightColour", glm::vec3(1.f, 1.f, 1.f));
 
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_lightPos");
-			glUniform3f(uniformLocation, 1.f, 4.f, 6.f);
+			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_lightPos");
+			glUniform3f(uniformLocation, 1.f, 4.f, 6.f);*/
+			TPShader->uploadFloat3("u_lightPos", glm::vec3(1.f, 1.f, 1.f));
 
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_viewPos");
-			glUniform3f(uniformLocation, 0.f, 0.f, 0.f);
+			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_viewPos");
+			glUniform3f(uniformLocation, 0.f, 0.f, 0.f);*/
+			TPShader->uploadFloat3("u_viewPos", glm::vec3(0.f, 0.f, 0.f));
 
 			//glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
 			letterTexture->bindToUnit(0);
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_texData");
-			glUniform1i(uniformLocation, 0);
+			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_texData");
+			glUniform1i(uniformLocation, 0);*/
+			TPShader->uploadInt("u_texData", 0);
 
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+			
+			TPShader->uploadMat4("u_model", models[2]);
+
 	
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_model");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[2]));
+			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_model");
+			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[2]));*/
 
 			//glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
 

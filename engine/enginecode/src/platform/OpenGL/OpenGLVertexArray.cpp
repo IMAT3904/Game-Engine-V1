@@ -33,7 +33,7 @@ namespace Engine
 
 	}
 
-	void OpenGLVertexArray::addVertextBuffer(const std::shared_ptr<OpenGLVertexBuffer>& vertexBuffer)
+	void OpenGLVertexArray::addVertextBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
 		glBindVertexArray(m_OpenGL_ID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->getRenderID());

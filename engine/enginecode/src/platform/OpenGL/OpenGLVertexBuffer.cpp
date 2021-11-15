@@ -40,7 +40,7 @@ namespace Engine
 
 	}
 
-	void OpenGLVertexBuffer::edit(void * vertices, uint32_t size, uint32_t offset)
+	void OpenGLVertexBuffer::edit(void * vertices, uint32_t size, int32_t offset)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_OpenGL_ID);
 		glBufferSubData(GL_ARRAY_BUFFER, offset, size, vertices);
