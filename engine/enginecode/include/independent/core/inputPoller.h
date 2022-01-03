@@ -4,8 +4,6 @@
 
 namespace Engine 
 {
-
-
 	class InputPoller
 	{
 	public:

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <platform/OpenGL/OpenGLTexture.h>
+#include <rendering/texture.h>
 #include <memory>
 #include <glm/glm.hpp>
 
@@ -12,7 +12,7 @@ namespace Engine
 	{
 	public:
 		SubTexture();
-		SubTexture(const std::shared_ptr<OpenGLTexture>& texture, const glm::vec2& UVStart, const glm::vec2& UVEnd);
+		SubTexture(const std::shared_ptr<Texture>& texture, const glm::vec2& UVStart, const glm::vec2& UVEnd);
 		inline glm::vec2 getUVStart() { return m_UVStart; }
 		inline glm::vec2 getUVEnd() { return m_UVEnd; }
 		glm::ivec2 getSize() { return m_size; }
@@ -25,7 +25,7 @@ namespace Engine
 		float transformV(float V);
 		glm::vec2 tramsformUV(glm::vec2 UV);
 	private:
-		std::shared_ptr<OpenGLTexture> m_texture;
+		std::shared_ptr<Texture> m_texture;
 		glm::vec2 m_UVStart;
 		glm::vec2 m_UVEnd;
 		glm::ivec2 m_size;

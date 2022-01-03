@@ -6,10 +6,14 @@
 #include "rendering/indexBuffer.h"
 #include "rendering/vertexBuffer.h"
 #include "rendering/vertexArray.h"
+#include "rendering/texture.h"
+#include "rendering/shader.h"
 
 #include "platform/OpenGL/OpenGLIndexBuffer.h"
 #include "platform/OpenGL/OpenGLVertexBuffer.h"
 #include "platform/OpenGL/OpenGLVertexArray.h"
+#include "platform/OpenGL/OpenGLTexture.h"
+#include "platform/OpenGL/OpenGLShader.h"
 
 #include "systems/log.h"
 
@@ -65,6 +69,78 @@ namespace Engine
 
 		case RenderAPI::API::OpenGL:
 			return new OpenGLVertexArray();
+
+		case RenderAPI::API::Direct3D:
+			Log::error("Direct3D not currently Supported!");
+
+		case RenderAPI::API::Vulkan:
+			Log::error("Vulkan not currently Supported!");
+		}
+	}
+
+	Texture * Texture::create(const char * filepath)
+	{
+		switch (RenderAPI::getAPI())
+		{
+		case RenderAPI::API::None:
+			Log::error("No Supported Rendering API");
+
+		case RenderAPI::API::OpenGL:
+			return new OpenGLTexture(filepath);
+
+		case RenderAPI::API::Direct3D:
+			Log::error("Direct3D not currently Supported!");
+
+		case RenderAPI::API::Vulkan:
+			Log::error("Vulkan not currently Supported!");
+		}
+	}
+
+	Texture * Texture::create(uint32_t width, uint32_t height, uint32_t channels, unsigned char * data)
+	{
+		switch (RenderAPI::getAPI())
+		{
+		case RenderAPI::API::None:
+			Log::error("No Supported Rendering API");
+
+		case RenderAPI::API::OpenGL:
+			return new OpenGLTexture(width, height, channels, data);
+
+		case RenderAPI::API::Direct3D:
+			Log::error("Direct3D not currently Supported!");
+
+		case RenderAPI::API::Vulkan:
+			Log::error("Vulkan not currently Supported!");
+		}
+	}
+
+	Shader * Shader::create(const char * vertexFilepath, const char * fragmentFilepath)
+	{
+		switch (RenderAPI::getAPI())
+		{
+		case RenderAPI::API::None:
+			Log::error("No Supported Rendering API");
+
+		case RenderAPI::API::OpenGL:
+			return new OpenGLShader(vertexFilepath, fragmentFilepath);
+
+		case RenderAPI::API::Direct3D:
+			Log::error("Direct3D not currently Supported!");
+
+		case RenderAPI::API::Vulkan:
+			Log::error("Vulkan not currently Supported!");
+		}
+	}
+
+	Shader * Shader::create(const char * filepath)
+	{
+		switch (RenderAPI::getAPI())
+		{
+		case RenderAPI::API::None:
+			Log::error("No Supported Rendering API");
+
+		case RenderAPI::API::OpenGL:
+			return new OpenGLShader(filepath);
 
 		case RenderAPI::API::Direct3D:
 			Log::error("Direct3D not currently Supported!");

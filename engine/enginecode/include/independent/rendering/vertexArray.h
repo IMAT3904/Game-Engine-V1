@@ -16,7 +16,7 @@ namespace Engine
 
 		static VertexArray* create();
 
-		virtual inline uint32_t getRenderID() const = 0;
+		virtual inline uint32_t getID() const = 0;
 		virtual inline uint32_t getDrawCount() const = 0;
 
 	private:

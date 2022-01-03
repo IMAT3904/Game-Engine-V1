@@ -18,12 +18,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "platform/OpenGL/OpenGLVertexArray.h"
-#include "platform/OpenGL/OpenGLShader.h"
-#include "platform/OpenGL/OpenGLTexture.h"
-
-#include "rendering/subTexture.h"
 #include "rendering/indexBuffer.h"
+#include "rendering/vertexBuffer.h"
+#include "rendering/vertexArray.h"
+#include "rendering/subTexture.h"
+#include "rendering/texture.h"
+#include "rendering/shader.h"
 
 
 
@@ -164,10 +164,13 @@ namespace Engine {
 	{
 #pragma region TEXTURES
 
-		std::shared_ptr<OpenGLTexture> letterTexture;
-		letterTexture.reset(new OpenGLTexture("assets/textures/letterAndNumberCube.png"));
-		std::shared_ptr<OpenGLTexture> numberTexture;
-		numberTexture.reset(new OpenGLTexture("assets/textures/numberCube.png"));
+		std::shared_ptr<Texture> letterTexture;
+		letterTexture.reset(Texture::create("assets/textures/letterAndNumberCube2.png"));
+		std::shared_ptr<Texture> numberTexture;
+		numberTexture.reset(Texture::create("assets/textures/numberCube.png"));
+		/*unsigned char whitePx[4] = { 255, 255, 255, 255 };
+		std::shared_ptr<Texture> plainWhiteTexture;
+		plainWhiteTexture.reset(Texture::create(1, 1, 4, whitePx)); // Check after fix*/
 
 		SubTexture letterCube(letterTexture, { 0.f, 0.f }, { 1.0f, 0.5f });
 		SubTexture numberCube(letterTexture, { 0.f, 0.5f }, { 1.0f, 1.0f });
@@ -180,52 +183,57 @@ namespace Engine {
 			//	 <------ Pos ------>  <--- normal --->  <-- UV -->
 				 0.5f,  1.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.f),   letterCube.transformV(0.f),
 				 0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,   letterCube.transformU(0.f),   letterCube.transformV(0.5f),
-				-0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,   letterCube.transformU(0.33f), letterCube.transformV(0.5f),
-				-0.5f,  1.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.33f), letterCube.transformV(0.f),
-				-0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.33f), letterCube.transformV(0.5f),
+				 -0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,   letterCube.transformU(0.33f), letterCube.transformV(0.5f),
+				 -0.5f,  1.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.33f), letterCube.transformV(0.f),
+
+				 -0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.33f), letterCube.transformV(0.5f),
 				 0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
 				 0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.66f), letterCube.transformV(0.f),
-				-0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.33),  letterCube.transformV(0.f),
-				-0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  letterCube.transformU(1.f),   letterCube.transformV(0.f),
+				 -0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.33),  letterCube.transformV(0.f),
+				
+				 -0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  letterCube.transformU(1.f),   letterCube.transformV(0.f),
 				 0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.f),
 				 0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
-				-0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  letterCube.transformU(1.0f),  letterCube.transformV(0.5f),
+				 -0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  letterCube.transformU(1.0f),  letterCube.transformV(0.5f),
+				
 				 0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  numberCube.transformU(0.f),   numberCube.transformV(0.5f),
 				 0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  numberCube.transformU(0.f),   numberCube.transformV(1.0f),
-				-0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
-				-0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  numberCube.transformU(0.3f),  numberCube.transformV(0.5f),
-				-0.5f,  0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(0.5f),
-				-0.5f,  0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(0.5f),
-				-0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
-				-0.5f, -0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(1.0f),
+				 -0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
+				 -0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  numberCube.transformU(0.3f),  numberCube.transformV(0.5f),
+				
+				 -0.5f,  0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(0.5f),
+				 -0.5f,  0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(0.5f),
+				 -0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
+				 -0.5f, -0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(1.0f),
+				
 				 0.5f, -0.5f, -0.5f,  1.f,  0.f,  0.f,  numberCube.transformU(1.0f),  numberCube.transformV(1.0f),
 				 0.5f,  0.5f, -0.5f,  1.f,  0.f,  0.f,  numberCube.transformU(1.0f),  numberCube.transformV(0.5f),
 				 0.5f,  0.5f, 0.5f,   1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(0.5f),
 				 0.5f, -0.5f, 0.5f,   1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(1.0f)
 		};
 
-		float pyramidVertices[6 * 16] = {
-			//	 <------ Pos ------>  <--- colour ---> 
-				-0.5f, -0.5f, -0.5f,  0.8f, 0.2f, 0.8f, //  square Magneta
-				 0.5f, -0.5f, -0.5f,  0.8f, 0.2f, 0.8f,
-				 0.5f, -0.5f,  0.5f,  0.8f, 0.2f, 0.8f,
-				-0.5f, -0.5f,  0.5f,  0.8f, 0.2f, 0.8f,
+		float pyramidVertices[8 * 16] = {
+			//	 <------ Pos ------>  <--- normal --->  <-- UV -->
+				-0.5f, -0.5f, -0.5f,  0.f, -1.f, 0.f,  0.f, 0.f, //  square Magneta
+				 0.5f, -0.5f, -0.5f,  0.f, -1.f, 0.f,  0.f, 0.5f,
+				 0.5f, -0.5f,  0.5f,  0.f, -1.f, 0.f,  0.33f, 0.5f,
+				-0.5f, -0.5f,  0.5f,  0.f, -1.f, 0.f,  0.33f, 0.f,
 
-				-0.5f, -0.5f, -0.5f,  0.2f, 0.8f, 0.2f,  //triangle Green
-				-0.5f, -0.5f,  0.5f,  0.2f, 0.8f, 0.2f,
-				 0.0f,  0.5f,  0.0f,  0.2f, 0.8f, 0.2f,
+				-0.5f, -0.5f, -0.5f,  -0.8944f, 0.4472f, 0.f,  0.33f, 1.f,  //triangle Green
+				-0.5f, -0.5f,  0.5f,  -0.8944f, 0.4472f, 0.f,  0.66f, 1.f,
+				 0.0f,  0.5f,  0.0f,  -0.8944f, 0.4472f, 0.f,  0.495, 0.66f,
 
-				-0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.f, //triangle Red
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.f,
-				 0.0f,  0.5f,  0.0f,  1.0f, 0.0f, 0.f,
+				-0.5f, -0.5f,  0.5f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f, //triangle Red
+				 0.5f, -0.5f,  0.5f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f,
+				 0.0f,  0.5f,  0.0f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f,
+													 
+				 0.5f, -0.5f,  0.5f,  0.8944f, 0.4472f, 0.f,  0.f, 0.f, //  triangle Yellow
+				 0.5f, -0.5f, -0.5f,  0.8944f, 0.4472f,  0.f, 0.f, 0.f,
+				 0.0f,  0.5f,  0.0f,  0.8944f, 0.4472f,  0.f, 0.f, 0.f,
 
-				 0.5f, -0.5f,  0.5f,  0.8f, 0.8f, 0.2f, //  triangle Yellow
-				 0.5f, -0.5f, -0.5f,  0.8f, 0.8f, 0.2f,
-				 0.0f,  0.5f,  0.0f,  0.8f, 0.8f, 0.2f,
-
-				 0.5f, -0.5f, -0.5f,  0.f, 0.2f, 1.0f,//  triangle Blue
-				-0.5f, -0.5f, -0.5f,  0.f, 0.2f, 1.0f,
-				 0.0f,  0.5f,  0.0f,  0.f, 0.2f, 1.0f
+				 0.5f, -0.5f, -0.5f,  0.f,  0.4472f, -0.8944f,   0.f, 0.f, //  triangle Blue
+				-0.5f, -0.5f, -0.5f,  0.f, 0.4472f, -0.8944f,   0.f, 0.f,
+				 0.0f,  0.5f,  0.0f,  0.f, 0.4472f, -0.8944f,  0.f, 0.f,
 		};
 
 		uint32_t pyramidIndices[3 * 6] =
@@ -255,28 +263,27 @@ namespace Engine {
 #pragma endregion
 
 #pragma region GL_BUFFERS
-		std::shared_ptr<OpenGLVertexArray> cubeVAO;
-		std::shared_ptr<OpenGLVertexBuffer> cubeVBO;
+		std::shared_ptr<VertexArray> cubeVAO;
+		std::shared_ptr<VertexBuffer> cubeVBO;
 		std::shared_ptr<IndexBuffer> cubeIBO;
 
-		std::shared_ptr<OpenGLVertexArray> pyramidVAO;
-		std::shared_ptr<OpenGLVertexBuffer> pyramidVBO;
+		std::shared_ptr<VertexArray> pyramidVAO;
+		std::shared_ptr<VertexBuffer> pyramidVBO;
 		std::shared_ptr<IndexBuffer> pyramidIBO;
 
-		cubeVAO.reset(new OpenGLVertexArray);
+		cubeVAO.reset(VertexArray::create());
 
 		BufferLayout cubeLayout = { ShaderDataType::Float3, ShaderDataType::Float3, ShaderDataType::Float2 };
-		cubeVBO.reset(new OpenGLVertexBuffer(cubeVertices, sizeof(cubeVertices), cubeLayout));
+		cubeVBO.reset(VertexBuffer::create(cubeVertices, sizeof(cubeVertices), cubeLayout));
 
 		cubeVAO->addVertextBuffer(cubeVBO);
 
 		cubeIBO.reset(IndexBuffer::create(cubeIndices, 36));
 		cubeVAO->setIndexBuffer(cubeIBO);
 
-		pyramidVAO.reset(new OpenGLVertexArray);
+		pyramidVAO.reset(VertexArray::create());
 
-		BufferLayout pyramidLayout = { ShaderDataType::Float3, ShaderDataType::Float3 };
-		pyramidVBO.reset(new OpenGLVertexBuffer(pyramidVertices, sizeof(pyramidVertices), pyramidLayout));
+		pyramidVBO.reset(VertexBuffer::create(pyramidVertices, sizeof(pyramidVertices), cubeLayout));
 
 		pyramidIBO.reset(IndexBuffer::create(pyramidIndices, 18));
 
@@ -287,11 +294,11 @@ namespace Engine {
 #pragma endregion
 
 #pragma region SHADERS
-		std::shared_ptr<OpenGLShader> FCShader;
-		FCShader.reset(new OpenGLShader("./assets/shaders/flatColour.glsl"));
+		std::shared_ptr<Shader> FCShader;
+		FCShader.reset(Shader::create("./assets/shaders/flatColour.glsl"));
 
-		std::shared_ptr<OpenGLShader> TPShader;
-		TPShader.reset(new OpenGLShader("./assets/shaders/texturedPhong.glsl"));
+		std::shared_ptr<Shader> TPShader;
+		TPShader.reset(Shader::create("./assets/shaders/texturedPhong.glsl"));
 
 #pragma endregion 
 
@@ -325,72 +332,37 @@ namespace Engine {
 #pragma region Render
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glUseProgram(FCShader->getID());
-			glBindVertexArray(pyramidVAO->getRenderID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
-
-			//GLuint uniformLocation;
-
-			//uniformLocation = glGetUniformLocation(FCShader->getID(), "u_model");
-			//glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[0])); // Must include <glm/gtc/type_ptr.hpp>
-			FCShader->uploadMat4("u_model", models[0]);
-			FCShader->uploadMat4("u_view", view);
-			FCShader->uploadMat4("u_projection", projection);
-			
-			/*uniformLocation = glGetUniformLocation(FCShader->getID(), "u_view");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(view));
-
-			uniformLocation = glGetUniformLocation(FCShader->getID(), "u_projection");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));*/
-
-			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-
 			glUseProgram(TPShader->getID());
 
-			glBindVertexArray(cubeVAO->getRenderID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
+			//glBindTexture(GL_TEXTURE_3D, plainWhiteTexture->getID());
+			glBindVertexArray(pyramidVAO->getID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
 
-			TPShader->uploadMat4("u_model", models[1]);
+			TPShader->uploadMat4("u_model", models[0]);
 			TPShader->uploadMat4("u_view", view);
 			TPShader->uploadMat4("u_projection", projection);
 
-			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_model");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[1]));
-
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_view");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(view));
-
-			uniformLocation = glGetUniformLocation(TPShader->getID(), "u_projection");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));*/
-
-			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_lightColour");
-			glUniform3f(uniformLocation, 1.f, 1.f, 1.f);*/
 			TPShader->uploadFloat3("u_lightColour", glm::vec3(1.f, 1.f, 1.f));
-
-			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_lightPos");
-			glUniform3f(uniformLocation, 1.f, 4.f, 6.f);*/
 			TPShader->uploadFloat3("u_lightPos", glm::vec3(1.f, 1.f, 1.f));
-
-			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_viewPos");
-			glUniform3f(uniformLocation, 0.f, 0.f, 0.f);*/
 			TPShader->uploadFloat3("u_viewPos", glm::vec3(0.f, 0.f, 0.f));
 
-			//glBindTexture(GL_TEXTURE_2D, letterTexture->getID());
+			TPShader->uploadFloat4("u_tint", { 0.f, 1.f, 0.f, 1.f });
+			TPShader->uploadInt("u_texData", 0);
+
+			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+
+			glBindVertexArray(cubeVAO->getID());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
+
+			TPShader->uploadMat4("u_model", models[1]);
+
 			letterTexture->bindToUnit(0);
-			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_texData");
-			glUniform1i(uniformLocation, 0);*/
+			TPShader->uploadFloat4("u_tint", { 1.f, 1.f, 1.f, 1.f });
 			TPShader->uploadInt("u_texData", 0);
 
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 			
 			TPShader->uploadMat4("u_model", models[2]);
-
-	
-			/*uniformLocation = glGetUniformLocation(TPShader->getID(), "u_model");
-			glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(models[2]));*/
-
-			//glBindTexture(GL_TEXTURE_2D, numberTexture->getID());
-
 
 			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 #pragma endregion

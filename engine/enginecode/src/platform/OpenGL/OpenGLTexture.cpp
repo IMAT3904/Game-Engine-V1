@@ -3,6 +3,7 @@
 #include "engine_pch.h"
 #include <glad/glad.h>
 #include "platform/OpenGL/OpenGLTexture.h"
+#include "rendering/texture.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -17,11 +18,11 @@ namespace Engine
 
 		if (data) init(width, height, channels, data);
 
-
+		//stbi_image_free(data);
 
 	}
 
-	OpenGLTexture::OpenGLTexture(uint32_t width, int32_t height, uint32_t channels, unsigned char * data)
+	OpenGLTexture::OpenGLTexture(uint32_t width, uint32_t height, uint32_t channels, unsigned char * data)
 	{
 
 		if (data) { init(width, height, channels, data); }
@@ -32,7 +33,7 @@ namespace Engine
 		glDeleteTextures(1, &m_OpenGL_ID);
 	}
 
-	void OpenGLTexture::edit(int32_t xOffset, int32_t yOffset, uint32_t width, uint32_t height, unsigned char * data)
+	void OpenGLTexture::edit(int32_t xOffset, int32_t yOffset, uint32_t width, uint32_t height, unsigned char * data) 
 	{
 		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);
 		if (data)
@@ -48,7 +49,7 @@ namespace Engine
 		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);
 	}
 
-	void OpenGLTexture::init(uint32_t width, int32_t height, uint32_t channels, unsigned char * data)
+	void OpenGLTexture::init(uint32_t width, uint32_t height, uint32_t channels, unsigned char * data)
 	{
 		glGenTextures(1, &m_OpenGL_ID);
 		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);
