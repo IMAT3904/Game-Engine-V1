@@ -25,7 +25,7 @@ namespace Engine
 	OpenGLTexture::OpenGLTexture(uint32_t width, uint32_t height, uint32_t channels, unsigned char * data)
 	{
 
-		if (data) { init(width, height, channels, data); }
+		if (data) init(width, height, channels, data);
 	}
 
 	OpenGLTexture::~OpenGLTexture()
@@ -65,7 +65,7 @@ namespace Engine
 		else return;
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		stbi_image_free(data);
+		//stbi_image_free(data);
 		m_width = width;
 		m_height = height;
 		m_channels = channels;

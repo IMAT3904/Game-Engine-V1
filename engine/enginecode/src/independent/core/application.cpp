@@ -53,7 +53,7 @@ namespace Engine {
 		// Start Timer
 		m_timer.reset(new ChronoTimer);
 		m_timer->start();
-		WindowProperties props("Game Engine V1", 1024, 800, false);
+		WindowProperties props("Danny Tech Engine", 1024, 800, false);
 		m_window.reset(Window::create(props));
 		m_window->setVSync(false);
 		InputPoller::setNative(m_window->getNativeWindow());
@@ -168,9 +168,9 @@ namespace Engine {
 		letterTexture.reset(Texture::create("assets/textures/letterAndNumberCube2.png"));
 		std::shared_ptr<Texture> numberTexture;
 		numberTexture.reset(Texture::create("assets/textures/numberCube.png"));
-		/*unsigned char whitePx[4] = { 255, 255, 255, 255 };
+		unsigned char whitePx[4] = { 255, 255, 255, 255 };
 		std::shared_ptr<Texture> plainWhiteTexture;
-		plainWhiteTexture.reset(Texture::create(1, 1, 4, whitePx)); // Check after fix*/
+		plainWhiteTexture.reset(Texture::create(1, 1, 4, whitePx)); // Check after fix
 
 		SubTexture letterCube(letterTexture, { 0.f, 0.f }, { 1.0f, 0.5f });
 		SubTexture numberCube(letterTexture, { 0.f, 0.5f }, { 1.0f, 1.0f });
@@ -221,7 +221,7 @@ namespace Engine {
 
 				-0.5f, -0.5f, -0.5f,  -0.8944f, 0.4472f, 0.f,  0.33f, 1.f,  //triangle Green
 				-0.5f, -0.5f,  0.5f,  -0.8944f, 0.4472f, 0.f,  0.66f, 1.f,
-				 0.0f,  0.5f,  0.0f,  -0.8944f, 0.4472f, 0.f,  0.495, 0.66f,
+				 0.0f,  0.5f,  0.0f,  -0.8944f, 0.4472f, 0.f,  0.495, 0.f,
 
 				-0.5f, -0.5f,  0.5f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f, //triangle Red
 				 0.5f, -0.5f,  0.5f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f,
@@ -294,9 +294,6 @@ namespace Engine {
 #pragma endregion
 
 #pragma region SHADERS
-		std::shared_ptr<Shader> FCShader;
-		FCShader.reset(Shader::create("./assets/shaders/flatColour.glsl"));
-
 		std::shared_ptr<Shader> TPShader;
 		TPShader.reset(Shader::create("./assets/shaders/texturedPhong.glsl"));
 
@@ -332,9 +329,10 @@ namespace Engine {
 #pragma region Render
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+			plainWhiteTexture->bindToUnit(0);
+
 			glUseProgram(TPShader->getID());
 
-			//glBindTexture(GL_TEXTURE_3D, plainWhiteTexture->getID());
 			glBindVertexArray(pyramidVAO->getID());
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
 
@@ -346,7 +344,7 @@ namespace Engine {
 			TPShader->uploadFloat3("u_lightPos", glm::vec3(1.f, 1.f, 1.f));
 			TPShader->uploadFloat3("u_viewPos", glm::vec3(0.f, 0.f, 0.f));
 
-			TPShader->uploadFloat4("u_tint", { 0.f, 1.f, 0.f, 1.f });
+			TPShader->uploadFloat4("u_tint", { 0.4f, 0.7f, 0.3f, 1.f });
 			TPShader->uploadInt("u_texData", 0);
 
 			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
