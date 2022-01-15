@@ -24,6 +24,7 @@
 #include "rendering/subTexture.h"
 #include "rendering/texture.h"
 #include "rendering/shader.h"
+#include "rendering/Renderer3D.h"
 
 
 
@@ -173,13 +174,14 @@ namespace Engine {
 		plainWhiteTexture.reset(Texture::create(1, 1, 4, whitePx)); // Check after fix
 
 		SubTexture letterCube(letterTexture, { 0.f, 0.f }, { 1.0f, 0.5f });
-		SubTexture numberCube(letterTexture, { 0.f, 0.5f }, { 1.0f, 1.0f });
+		SubTexture numberCube(numberTexture, { 0.f, 0.5f }, { 1.0f, 1.0f });
 
 #pragma endregion
 
 #pragma region RAW_DATA
 
-		float cubeVertices[8 * 24] = {
+		float cubeVertices[8 * 24] = 
+		{
 			//	 <------ Pos ------>  <--- normal --->  <-- UV -->
 				 0.5f,  1.5f, -0.5f,  0.f,  0.f, -1.f,  letterCube.transformU(0.f),   letterCube.transformV(0.f),
 				 0.5f, 0.5f, -0.5f,  0.f,  0.f, -1.f,   letterCube.transformU(0.f),   letterCube.transformV(0.5f),
@@ -190,29 +192,30 @@ namespace Engine {
 				 0.5f, -0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
 				 0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.66f), letterCube.transformV(0.f),
 				 -0.5f,  0.5f, 0.5f,   0.f,  0.f,  1.f,  letterCube.transformU(0.33),  letterCube.transformV(0.f),
-				
+
 				 -0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  letterCube.transformU(1.f),   letterCube.transformV(0.f),
 				 0.5f, -0.5f, -0.5f,  0.f, -1.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.f),
 				 0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  letterCube.transformU(0.66f), letterCube.transformV(0.5f),
 				 -0.5f, -0.5f, 0.5f,   0.f, -1.f,  0.f,  letterCube.transformU(1.0f),  letterCube.transformV(0.5f),
-				
+
 				 0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  numberCube.transformU(0.f),   numberCube.transformV(0.5f),
 				 0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  numberCube.transformU(0.f),   numberCube.transformV(1.0f),
 				 -0.5f,  0.5f, -0.5f,  0.f,  1.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
 				 -0.5f,  0.5f, 0.5f,   0.f,  1.f,  0.f,  numberCube.transformU(0.3f),  numberCube.transformV(0.5f),
-				
+
 				 -0.5f,  0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(0.5f),
 				 -0.5f,  0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(0.5f),
 				 -0.5f, -0.5f, -0.5f, -1.f,  0.f,  0.f,  numberCube.transformU(0.33f), numberCube.transformV(1.0f),
 				 -0.5f, -0.5f, 0.5f,  -1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(1.0f),
-				
+
 				 0.5f, -0.5f, -0.5f,  1.f,  0.f,  0.f,  numberCube.transformU(1.0f),  numberCube.transformV(1.0f),
 				 0.5f,  0.5f, -0.5f,  1.f,  0.f,  0.f,  numberCube.transformU(1.0f),  numberCube.transformV(0.5f),
 				 0.5f,  0.5f, 0.5f,   1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(0.5f),
 				 0.5f, -0.5f, 0.5f,   1.f,  0.f,  0.f,  numberCube.transformU(0.66f), numberCube.transformV(1.0f)
 		};
 
-		float pyramidVertices[8 * 16] = {
+		float pyramidVertices[8 * 16] = 
+		{
 			//	 <------ Pos ------>  <--- normal --->  <-- UV -->
 				-0.5f, -0.5f, -0.5f,  0.f, -1.f, 0.f,  0.f, 0.f, //  square Magneta
 				 0.5f, -0.5f, -0.5f,  0.f, -1.f, 0.f,  0.f, 0.5f,
@@ -226,7 +229,7 @@ namespace Engine {
 				-0.5f, -0.5f,  0.5f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f, //triangle Red
 				 0.5f, -0.5f,  0.5f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f,
 				 0.0f,  0.5f,  0.0f,  0.f, 0.4472f, 0.8944f,  0.f, 0.f,
-													 
+
 				 0.5f, -0.5f,  0.5f,  0.8944f, 0.4472f, 0.f,  0.f, 0.f, //  triangle Yellow
 				 0.5f, -0.5f, -0.5f,  0.8944f, 0.4472f,  0.f, 0.f, 0.f,
 				 0.0f,  0.5f,  0.0f,  0.8944f, 0.4472f,  0.f, 0.f, 0.f,
@@ -246,7 +249,8 @@ namespace Engine {
 			13, 14, 15
 		};
 
-		uint32_t cubeIndices[3 * 12] = {
+		uint32_t cubeIndices[3 * 12] = 
+		{
 			0, 1, 2,
 			2, 3, 0,
 			4, 5, 6,
@@ -297,11 +301,25 @@ namespace Engine {
 		std::shared_ptr<Shader> TPShader;
 		TPShader.reset(Shader::create("./assets/shaders/texturedPhong.glsl"));
 
-#pragma endregion 
+#pragma endregion
 
+#pragma region MATERIALS
+		std::shared_ptr<Material> pyramidMat;
+		std::shared_ptr<Material> letterCubeMat;
+		std::shared_ptr<Material> numberCubeMat;
+
+		pyramidMat.reset(new Material(TPShader, { 0.4f, 0.7f, 0.3f, 1.f }));
+		letterCubeMat.reset(new Material(TPShader, letterTexture));
+		numberCubeMat.reset(new Material(TPShader, numberTexture));
+
+
+#pragma endregion
 		float timestep = 0.0f;
+
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.3f, 0.4f, 1.f, 1.0f);
+
+		Renderer3D::init();
 
 		glm::mat4 view = glm::lookAt(
 			glm::vec3(0.f, 0.f, 0.f),
@@ -315,15 +333,25 @@ namespace Engine {
 		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(0.f, 0.f, -6.f));
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(2.f, 0.f, -6.f));
 
+		SceneWideUniforms swu3D;
+
+		glm::vec3 lightdata[3] = { { 1.0f, 1.0f, 1.0f }, { -2.f, 4.f, 6.f }, { 0.f, 0.f, 0.f } };
+
+		swu3D["u_view"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast <void *>(glm::value_ptr(view)));
+		swu3D["u_projection"] = std::pair<ShaderDataType, void *>(ShaderDataType::Mat4, static_cast <void *>(glm::value_ptr(projection)));
+
+		swu3D["u_lightColour"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightdata[0])));
+		swu3D["u_lightPos"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightdata[1])));
+		swu3D["u_viewPos"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightdata[2])));
 
 		while (m_running)
 		{
 			timestep = m_timer->getElapsedTime();
 			m_timer->reset();
-			Log::trace("FPS {0}", 1.0f / timestep);
+			//Log::trace("FPS {0}", 1.0f / timestep);
 
 			// Do frame stuff
-			for (auto& model : models) { model = glm::rotate(model, timestep / 2, glm::vec3(0.f, 1.0f, 0.f)); }
+			for (auto& model : models) { model = glm::rotate(model, timestep, glm::vec3(0.f, 1.0f, 0.f)); }
 
 			// Do frame stuff
 #pragma region Render
@@ -331,38 +359,13 @@ namespace Engine {
 
 			plainWhiteTexture->bindToUnit(0);
 
-			glUseProgram(TPShader->getID());
+			Renderer3D::begin(swu3D);
 
-			glBindVertexArray(pyramidVAO->getID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pyramidIBO->getRenderID());
+			Renderer3D::submit(pyramidVAO, pyramidMat, models[0]);
+			Renderer3D::submit(cubeVAO, letterCubeMat, models[1]);
+			Renderer3D::submit(cubeVAO, letterCubeMat, models[2]);
 
-			TPShader->uploadMat4("u_model", models[0]);
-			TPShader->uploadMat4("u_view", view);
-			TPShader->uploadMat4("u_projection", projection);
-
-			TPShader->uploadFloat3("u_lightColour", glm::vec3(1.f, 1.f, 1.f));
-			TPShader->uploadFloat3("u_lightPos", glm::vec3(1.f, 1.f, 1.f));
-			TPShader->uploadFloat3("u_viewPos", glm::vec3(0.f, 0.f, 0.f));
-
-			TPShader->uploadFloat4("u_tint", { 0.4f, 0.7f, 0.3f, 1.f });
-			TPShader->uploadInt("u_texData", 0);
-
-			glDrawElements(GL_TRIANGLES, pyramidVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-
-			glBindVertexArray(cubeVAO->getID());
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO->getRenderID());
-
-			TPShader->uploadMat4("u_model", models[1]);
-
-			letterTexture->bindToUnit(0);
-			TPShader->uploadFloat4("u_tint", { 1.f, 1.f, 1.f, 1.f });
-			TPShader->uploadInt("u_texData", 0);
-
-			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
-			
-			TPShader->uploadMat4("u_model", models[2]);
-
-			glDrawElements(GL_TRIANGLES, cubeVAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer3D::end();
 #pragma endregion
 			m_window->onUpdate(timestep);
 		};

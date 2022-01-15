@@ -20,10 +20,13 @@ namespace Engine
 		inline uint32_t getDrawCount() const override {
 			if (m_indexBuffer) { return m_indexBuffer->getCount(); } else { return 0; }
 		};
+		inline uint32_t getIBOID()const override {
+			if (m_indexBuffer) { return m_indexBuffer->getID(); }
+			else { return -1; }
+		};
 	private:
 		uint32_t m_OpenGL_ID;
 		uint32_t m_attributeIndex = 0;
-		std::vector<std::shared_ptr<OpenGLVertexBuffer>> m_vertexBuffer;
-		std::shared_ptr<IndexBuffer> m_indexBuffer;
+
 	};
 }

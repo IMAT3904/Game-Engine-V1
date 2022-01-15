@@ -12,10 +12,12 @@ namespace Engine
 		{
 			switch (type)
 			{
+			case ShaderDataType::Int: return GL_INT;
 			case ShaderDataType::Float: return GL_FLOAT;
 			case ShaderDataType::Float2: return GL_FLOAT;
 			case ShaderDataType::Float3: return GL_FLOAT;
 			case ShaderDataType::Float4: return GL_FLOAT;
+			case ShaderDataType::Mat4: return GL_FLOAT;
 			default: return GL_INVALID_ENUM;
 			}
 		}
@@ -53,6 +55,7 @@ namespace Engine
 			m_attributeIndex++;
 
 		}
+		m_vertexBuffer.push_back(vertexBuffer);
 	}
 	void OpenGLVertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
