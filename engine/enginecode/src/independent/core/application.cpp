@@ -25,6 +25,7 @@
 #include "rendering/texture.h"
 #include "rendering/shader.h"
 #include "rendering/Renderer3D.h"
+#include "rendering/Renderer2D.h"
 
 
 
@@ -316,11 +317,11 @@ namespace Engine {
 #pragma endregion
 		float timestep = 0.0f;
 
-		glEnable(GL_DEPTH_TEST);
+		Quad q1 = Quad::createCentreHalfExtents({ 400.f, 200.f }, { 100.f, 50.f });
 		glClearColor(0.3f, 0.4f, 1.f, 1.0f);
 
-		Renderer3D::init();
-
+		//Renderer3D::init();
+		Renderer2D::init();
 		glm::mat4 view = glm::lookAt(
 			glm::vec3(0.f, 0.f, 0.f),
 			glm::vec3(0.f, 0.f, -1.f),
@@ -333,6 +334,10 @@ namespace Engine {
 		models[1] = glm::translate(glm::mat4(1.0f), glm::vec3(0.f, 0.f, -6.f));
 		models[2] = glm::translate(glm::mat4(1.0f), glm::vec3(2.f, 0.f, -6.f));
 
+		glm::mat4 view2D = glm::mat4(1.0f);
+		glm::mat4 projection2D = glm::ortho(0.f, static_cast<float>(m_window->getWidth()), static_cast<float>(m_window->getHeight()), 0.f);
+
+
 		SceneWideUniforms swu3D;
 
 		glm::vec3 lightdata[3] = { { 1.0f, 1.0f, 1.0f }, { -2.f, 4.f, 6.f }, { 0.f, 0.f, 0.f } };
@@ -343,6 +348,11 @@ namespace Engine {
 		swu3D["u_lightColour"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightdata[0])));
 		swu3D["u_lightPos"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightdata[1])));
 		swu3D["u_viewPos"] = std::pair<ShaderDataType, void *>(ShaderDataType::Float3, static_cast<void *>(glm::value_ptr(lightdata[2])));
+		
+		SceneWideUniforms swu2D;
+		swu2D["u_view"] = std::pair<ShaderDataType, void*>(ShaderDataType::Mat4, static_cast <void*>(glm::value_ptr(view2D)));
+		swu2D["u_projection"] = std::pair<ShaderDataType, void*>(ShaderDataType::Mat4, static_cast <void*>(glm::value_ptr(projection2D)));
+
 
 		while (m_running)
 		{
@@ -358,15 +368,27 @@ namespace Engine {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			plainWhiteTexture->bindToUnit(0);
-
+			/*
+			glEnable(GL_DEPTH_TEST);
 			Renderer3D::begin(swu3D);
 
 			Renderer3D::submit(pyramidVAO, pyramidMat, models[0]);
+
 			Renderer3D::submit(cubeVAO, letterCubeMat, models[1]);
+
 			Renderer3D::submit(cubeVAO, letterCubeMat, models[2]);
 
 			Renderer3D::end();
+			*/
 #pragma endregion
+			glDisable(GL_DEPTH_TEST);
+
+			Renderer2D::begin(swu2D);
+
+			Renderer2D::submit(q1, { 0.f, 0.f, 1.f, 1.f });
+
+			Renderer2D::end();
+
 			m_window->onUpdate(timestep);
 		};
 
