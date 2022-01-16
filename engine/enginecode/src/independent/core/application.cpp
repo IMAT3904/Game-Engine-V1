@@ -27,8 +27,6 @@
 #include "rendering/Renderer3D.h"
 #include "rendering/Renderer2D.h"
 
-
-
 namespace Engine {
 	// Set static vars
 	Application* Application::s_instance = nullptr;
@@ -111,13 +109,30 @@ namespace Engine {
 	bool Application::onMoved(e_WindowMoved & e)
 	{
 		e.handle(true);
-		//Log::info("Window Moved! - {0} - {1}", e.getXPos(), e.getYPos());
+		Log::info("Window Moved! - {0} - {1}", e.getXPos(), e.getYPos());
 		return e.handled();
 	}
 
 	bool Application::onKeyPressed(e_KeyPressed & e)
 	{
+		Log::info("Key Pressed" + e.getKeyCode());
 		e.handle(true);
+		if (e.getKeyCode() == NG_KEY_RIGHT)
+		{
+			Log::info("A Key Pressed!");
+		}
+		else if (e.getKeyCode() == int32_t(68))
+		{
+			Log::info("D is pressed");
+		}
+		else if (e.getKeyCode() == int32_t(87))
+		{
+			Log::info("W is pressed");
+		}
+		else if (e.getKeyCode() == int32_t(83))
+		{
+			Log::info("S is pressed");
+		}
 		return e.handled();
 	}
 
@@ -130,6 +145,7 @@ namespace Engine {
 	bool Application::onButtonPressed(e_MouseButtonPressed & e)
 	{
 		e.handle(true);
+		Log::info("Key Pressed" + e.getButton());
 		return e.handled();
 	}
 
@@ -331,11 +347,25 @@ namespace Engine {
 
 		Renderer3D::init();
 		Renderer2D::init();
-		glm::mat4 view = glm::lookAt(
+		/*glm::mat4 view = glm::lookAt(
 			glm::vec3(0.f, 0.f, 0.f),
 			glm::vec3(0.f, 0.f, -1.f),
 			glm::vec3(0.f, 1.f, 0.f)
+		);*/
+#pragma region CameraTest
+		glm::mat4 view;
+		float camX = 0.0f;
+		float camY = 0.0f;
+		float camZ = -6.0f;
+		float camZZ= 3.0f;
+		view = glm::lookAt(
+			glm::vec3(0.0f, 0.0f, 3.0f),
+			glm::vec3(camX, camY, camZ), 
+			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
+		
+		const float radius = 10.f;
+#pragma endregion
 		glm::mat4 projection = glm::perspective(glm::radians(45.f), 1024.f / 800.f, 0.1f, 100.f);
 
 		glm::mat4 models[3];
@@ -365,6 +395,43 @@ namespace Engine {
 
 		while (m_running)
 		{
+			if (InputPoller::isKeyPressed(NG_KEY_S)) //!< Camera Controls (BASIC)
+			{
+				view = glm::lookAt(
+					glm::vec3(0.0f, 0.0f, 3.0f),
+					glm::vec3(camX, camY - 0.002, camZ),
+					glm::vec3(0.0f, 1.0f, 0.0f)
+				);
+				camY -= 0.002;
+			}
+			else if (InputPoller::isKeyPressed(NG_KEY_W)) 
+			{
+				view = glm::lookAt(
+					glm::vec3(0.0f, 0.0f, 3.0f),
+					glm::vec3(camX, camY + 0.002, camZ),
+					glm::vec3(0.0f, 1.0f, 0.0f)
+				);
+				camY += 0.002;
+			}
+			else if (InputPoller::isKeyPressed(NG_KEY_A))
+			{
+				view = glm::lookAt(
+					glm::vec3(0.0f, 0.0f, 3.0f),
+					glm::vec3(camX - 0.002, camY, camZ),
+					glm::vec3(0.0f, 1.0f, 0.0f)
+				);
+				camX -= 0.002;
+			}
+			else if (InputPoller::isKeyPressed(NG_KEY_D))
+			{
+				view = glm::lookAt(
+					glm::vec3(0.0f, 0.0f, 3.0f),
+					glm::vec3(camX + 0.002, camY, camZ),
+					glm::vec3(0.0f, 1.0f, 0.0f)
+				);
+				camX += 0.002;
+			}
+
 			timestep = m_timer->getElapsedTime();
 			m_timer->reset();
 			//Log::trace("FPS {0}", 1.0f / timestep);

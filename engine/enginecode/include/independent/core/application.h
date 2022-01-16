@@ -44,7 +44,6 @@ namespace Engine {
 	private:
 		static Application* s_instance; //!< Singleton instance of the application
 		bool m_running = true; //!< Is the application running?
-		
 	public:
 		virtual ~Application(); //!< Deconstructor
 		inline static Application& getInstance() { return *s_instance; } //!< Instance getter from singleton pattern
