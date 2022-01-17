@@ -6,12 +6,12 @@
 
 namespace Engine
 {
-	class Shader
+	class Shader //!< Shader Agnostic class
 	{
 	public:
 		virtual ~Shader() = default;
 
-		static Shader* create(const char* vertexFilepath, const char* fragmentFilepath);
+		static Shader* create(const char* vertexFilepath, const char* fragmentFilepath); //!< Two Shader Contstructors depending on requirements
 		static Shader* create(const char* filepath);
 
 		virtual inline uint32_t getID() const = 0;

@@ -5,7 +5,7 @@
 #include "platform/GLFW/GLFW_OpenGL_GC.h"
 #include "systems/log.h"
 
-namespace Engine
+namespace Engine //!< GLFW Window class - Enables creation of windows with required events and features
 {
 
 #ifdef NG_PLATFORM_WINDOWS

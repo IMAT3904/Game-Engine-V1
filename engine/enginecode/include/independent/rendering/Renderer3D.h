@@ -13,23 +13,23 @@ namespace Engine
 	class Material
 	{
 	public:
-		Material(const std::shared_ptr<Shader>& shader) : 
+		Material(const std::shared_ptr<Shader>& shader) : //!< Material constructor for shader
 			m_shader(shader), m_flags(0), m_texture(nullptr), m_tint(glm::vec4(0.f)) 
 		{}
 		
-		Material(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Texture>& texture, const glm::vec4& tint) :
+		Material(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Texture>& texture, const glm::vec4& tint) ://!< Material constructor for shader, texture & tint
 			m_shader(shader), m_texture(texture), m_tint(tint)
 		{
 			setFlag(flag_texture | flag_tint);
 		}
 		
-		Material(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Texture>& texture) :
+		Material(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Texture>& texture) : //!< Material constructor for shader and texture
 			m_shader(shader), m_texture(texture), m_tint(glm::vec4(0.f))
 		{
 			setFlag(flag_texture);
 		}
 
-		Material(const std::shared_ptr<Shader>& shader, const glm::vec4& tint) :
+		Material(const std::shared_ptr<Shader>& shader, const glm::vec4& tint) : //!< Material constructor for shader and tint
 			m_shader(shader), m_texture(nullptr), m_tint(tint)
 		{
 			setFlag(flag_tint);

@@ -96,7 +96,7 @@ Static Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class which allows the renderering of simple 2D primitives. </p>
 
-<p class="definition">Definition at line <a class="el" href="_renderer2_d_8h_source.html#l00023">23</a> of file <a class="el" href="_renderer2_d_8h_source.html">Renderer2D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_renderer2_d_8h_source.html#l00027">27</a> of file <a class="el" href="_renderer2_d_8h_source.html">Renderer2D.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2736e679d1a2476caa7ad8b0f45509fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2736e679d1a2476caa7ad8b0f45509fd">&#9670;&nbsp;</a></span>begin()</h2>
@@ -123,6 +123,12 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Begin a 2D scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">swu</td><td>Stores all the SWU ready for uploading </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00051">51</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -177,6 +183,7 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>&lt; Creating necessary buffers and index for 2D Render.</p>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00014">14</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -217,6 +224,12 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Render a tinted quad. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tint</td><td>Submits render to shader with quad and tint </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00085">85</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -263,6 +276,12 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Render a textured and tinted quad;. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>Submits render to shader with quad, tint and texture. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00121">121</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -319,6 +338,12 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">degrees</td><td>Submits render to shader with quad, tint, texture and angle </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00146">146</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -369,6 +394,12 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">degrees</td><td>Submits render to shader with quad, tint, angle </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00141">141</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -409,6 +440,12 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Render a textured quad. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td>Submits render to shader with quad and texture </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00103">103</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -459,6 +496,12 @@ Static Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">degrees</td><td>Submits render to shader with quad, texture, angle </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="renderer2_d_8cpp_source.html#l00136">136</a> of file <a class="el" href="renderer2_d_8cpp_source.html">renderer2D.cpp</a>.</p>
 
@@ -485,7 +528,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_renderer2_d_8h_source.html#l00046">46</a> of file <a class="el" href="_renderer2_d_8h_source.html">Renderer2D.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_renderer2_d_8h_source.html#l00050">50</a> of file <a class="el" href="_renderer2_d_8h_source.html">Renderer2D.h</a>.</p>
 
 </div>
 </div>

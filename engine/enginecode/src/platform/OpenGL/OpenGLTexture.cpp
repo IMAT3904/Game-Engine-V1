@@ -11,7 +11,7 @@
 
 namespace Engine
 {
-	OpenGLTexture::OpenGLTexture(const char * filepath)
+	OpenGLTexture::OpenGLTexture(const char * filepath) //!< Constructors for an OpenGL Texture
 	{
 		int width, height, channels;
 		unsigned char *data = stbi_load(filepath, &width, &height, &channels, 0);
@@ -33,7 +33,7 @@ namespace Engine
 		glDeleteTextures(1, &m_OpenGL_ID);
 	}
 
-	void OpenGLTexture::edit(int32_t xOffset, int32_t yOffset, uint32_t width, uint32_t height, unsigned char * data) 
+	void OpenGLTexture::edit(int32_t xOffset, int32_t yOffset, uint32_t width, uint32_t height, unsigned char * data) //!< Enables modifying texture
 	{
 		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);
 		if (data)
@@ -43,13 +43,13 @@ namespace Engine
 		}
 	}
 
-	void OpenGLTexture::bindToUnit(uint32_t unit)
+	void OpenGLTexture::bindToUnit(uint32_t unit) //!< Binds unit to rendering
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);
 	}
 
-	void OpenGLTexture::init(uint32_t width, uint32_t height, uint32_t channels, unsigned char * data)
+	void OpenGLTexture::init(uint32_t width, uint32_t height, uint32_t channels, unsigned char * data) //!< Initialises Open GL Textures to GPU
 	{
 		glGenTextures(1, &m_OpenGL_ID);
 		glBindTexture(GL_TEXTURE_2D, m_OpenGL_ID);

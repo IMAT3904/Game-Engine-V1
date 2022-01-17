@@ -8,7 +8,7 @@ namespace Engine
 {
 	std::shared_ptr<Renderer3D::InternalData> Renderer3D::s_data = nullptr;
 
-	void Renderer3D::init()
+	void Renderer3D::init() //!< Initializes the renderer
 	{
 		s_data.reset(new InternalData);
 
@@ -19,12 +19,12 @@ namespace Engine
 
 	}
 
-	void Renderer3D::begin(const SceneWideUniforms & sceneWideUniforms)
+	void Renderer3D::begin(const SceneWideUniforms & sceneWideUniforms) //!< sets the scene wide uniforms.
 	{
 		s_data->sceneWideUniforms = sceneWideUniforms;
 	}
 
-	void Renderer3D::submit(const std::shared_ptr<VertexArray>& geometry, const std::shared_ptr<Material>& material, const glm::mat4 & model)
+	void Renderer3D::submit(const std::shared_ptr<VertexArray>& geometry, const std::shared_ptr<Material>& material, const glm::mat4 & model) //!< for each scenewideuniform uploads content to shader.
 	{
 		//Bind Shader
 		glUseProgram(material->getShader()->getID());
@@ -70,7 +70,7 @@ namespace Engine
 		glDrawElements(GL_TRIANGLES, geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer3D::end()
+	void Renderer3D::end() //!< Clears the scenewideuniforms variable ready for next render.
 	{
 		s_data->sceneWideUniforms.clear();
 	}

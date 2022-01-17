@@ -6,7 +6,7 @@
 #include "rendering/shader.h"
 
 namespace Engine {
-	class OpenGLShader : public Shader
+	class OpenGLShader : public Shader //!< Shader class to manage shader uploads etc.
 	{
 	public:
 		OpenGLShader(const char* vertexFilepath, const char* fragmentFilepath);

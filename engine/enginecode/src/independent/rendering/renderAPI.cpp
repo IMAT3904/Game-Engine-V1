@@ -17,7 +17,7 @@
 
 #include "systems/log.h"
 
-namespace Engine
+namespace Engine //!< Agnostic templates of original code. When run it directs the code to the necessary renderer i.e. Open GL / Direct X
 {
 	RenderAPI::API Engine::RenderAPI::s_API = RenderAPI::API::OpenGL;
 
@@ -132,7 +132,7 @@ namespace Engine
 		}
 	}
 
-	Shader * Shader::create(const char * filepath)
+	Shader * Shader::create(const char * filepath) 
 	{
 		switch (RenderAPI::getAPI())
 		{

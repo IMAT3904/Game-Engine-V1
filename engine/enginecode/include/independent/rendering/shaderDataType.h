@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace Engine
+namespace Engine //!< Class with Shader Data Types when needed in Renderer.
 {
 	enum class ShaderDataType
 	{

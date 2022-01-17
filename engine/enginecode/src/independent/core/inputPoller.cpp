@@ -2,7 +2,7 @@
 #include "independent/core/inputPoller.h"
 #include "platform/GLFW/GLFWInputPoller.h"
 
-namespace Engine 
+namespace Engine //!< Used to track / check key / mouse inputs
 {
 	bool InputPoller::isKeyPressed(int32_t keyCode)
 	{

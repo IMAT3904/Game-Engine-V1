@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-	class VertexBuffer
+	class VertexBuffer //!< Vertex Buffer Agnostic class
 	{
 	public:
 		virtual ~VertexBuffer() = default;

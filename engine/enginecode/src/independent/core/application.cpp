@@ -448,7 +448,7 @@ namespace Engine {
 			glEnable(GL_DEPTH_TEST);
 			Renderer3D::begin(swu3D);
 
-			Renderer3D::submit(pyramidVAO, pyramidMat, models[0]);
+ 			Renderer3D::submit(pyramidVAO, pyramidMat, models[0]);
 
 			Renderer3D::submit(cubeVAO, letterCubeMat, models[1]);
 

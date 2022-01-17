@@ -6,6 +6,10 @@
 
 namespace Engine
 {
+	/**
+\class Quad
+Simple Quad class to manage vectors.
+*/
 	class Quad
 	{
 	public:

@@ -8,7 +8,7 @@ namespace Engine
 	/** \class indexBuffer
 	* API agnostic index buffer
 	*/
-	class IndexBuffer
+	class IndexBuffer //!< Index Buffer Agnostic Class
 	{
 	public:
 		virtual ~IndexBuffer() = default;

@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-	class VertexArray
+	class VertexArray //Agnostic Vertex Array Class
 	{
 	public:
 		virtual ~VertexArray() = default;

@@ -11,7 +11,7 @@ namespace Engine
 	std::shared_ptr <Renderer2D::InternalData> Renderer2D::s_data = nullptr;
 
 
-	void Renderer2D::init()
+	void Renderer2D::init() //!< Initializes 2D Rendering ready for data
 	{
 
 		s_data.reset(new InternalData);
@@ -37,7 +37,7 @@ namespace Engine
 		std::shared_ptr<VertexBuffer> VBO;
 		std::shared_ptr<IndexBuffer> IBO;
 
-		s_data->VAO.reset(VertexArray::create());
+		s_data->VAO.reset(VertexArray::create()); //!< Creating necessary buffers and index for 2D Render.
 		VBO.reset(VertexBuffer::create(vertices, sizeof(vertices), BufferLayout({ ShaderDataType::Float2, ShaderDataType::Float2 })));
 		IBO.reset(IndexBuffer::create(indices, 4));
 		s_data->VAO->addVertextBuffer(VBO);
@@ -48,7 +48,7 @@ namespace Engine
 
 	}
 
-	void Renderer2D::begin(const SceneWideUniforms& swu)
+	void Renderer2D::begin(const SceneWideUniforms& swu) //!< Stores all the SWU ready for uploading
 	{
 		// Bind the shader
 		glUseProgram(s_data->shader->getID());
@@ -82,7 +82,7 @@ namespace Engine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_data->VAO->getIBOID()); //getIndexBuffer needs to be implemented into vertex Array
 	}
 
-	void Renderer2D::submit(const Quad& quad, const glm::vec4 & tint)
+	void Renderer2D::submit(const Quad& quad, const glm::vec4 & tint) //!< Submits render to shader with quad and tint
 	{
 		Renderer2D::submit(quad, tint, s_data->defaultTexture);
 		/*
@@ -100,7 +100,7 @@ namespace Engine
 		*/
 	}
 
-	void Renderer2D::submit(const Quad & quad, const std::shared_ptr<Texture>& texture)
+	void Renderer2D::submit(const Quad & quad, const std::shared_ptr<Texture>& texture)  //!< Submits render to shader with quad and texture
 	{
 		Renderer2D::submit(quad, s_data->defaultTint, texture);
 		/*
@@ -118,7 +118,7 @@ namespace Engine
 		*/
 	}
 
-	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, const std::shared_ptr<Texture>& texture)
+	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, const std::shared_ptr<Texture>& texture)  //!< Submits render to shader with quad, tint and texture.
 	{
 		glBindTexture(GL_TEXTURE_2D, texture->getID());
 		s_data->model = glm::scale(glm::translate(glm::mat4(1.f), quad.m_translate), quad.m_scale);
@@ -133,17 +133,17 @@ namespace Engine
 		glDrawElements(GL_QUADS, s_data->VAO->getDrawCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Renderer2D::submit(const Quad & quad, const std::shared_ptr<Texture>& texture, float angle, bool degrees)
+	void Renderer2D::submit(const Quad & quad, const std::shared_ptr<Texture>& texture, float angle, bool degrees)  //!< Submits render to shader with quad, texture, angle
 	{
 		Renderer2D::submit(quad, s_data->defaultTint, texture, angle, degrees);
 	}
 
-	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, float angle, bool degrees)
+	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, float angle, bool degrees) //!< Submits render to shader with quad, tint, angle
 	{
 		Renderer2D::submit(quad, tint, s_data->defaultTexture, angle, degrees);
 	}
 
-	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, const std::shared_ptr<Texture>& texture, float angle, bool degrees)
+	void Renderer2D::submit(const Quad & quad, const glm::vec4 & tint, const std::shared_ptr<Texture>& texture, float angle, bool degrees) //!< Submits render to shader with quad, tint, texture and angle
 	{
 		if (degrees) angle = glm::radians(angle);
 
@@ -164,7 +164,7 @@ namespace Engine
 	{
 	}
 
-	Quad Quad::createCentreHalfExtents(const glm::vec2 & centre, const glm::vec2 & halfExtents)
+	Quad Quad::createCentreHalfExtents(const glm::vec2 & centre, const glm::vec2 & halfExtents)  //!< Creates quad for 2D
 	{
 		Quad result;
 

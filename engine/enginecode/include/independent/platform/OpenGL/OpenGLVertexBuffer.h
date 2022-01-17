@@ -6,7 +6,7 @@
 
 namespace Engine 
 {
-	class OpenGLVertexBuffer : public VertexBuffer
+	class OpenGLVertexBuffer : public VertexBuffer //!< Open GL VertexBuffer class
 	{
 	public:
 		OpenGLVertexBuffer(void* vertices, uint32_t size, BufferLayout layout);

@@ -28,7 +28,7 @@ namespace Engine {
 
 		std::shared_ptr<Window> m_window; //!< Window
 
-		bool onClose(WindowCloseEvent& e);
+		bool onClose(WindowCloseEvent& e); //!< Window Events
 		bool onResize(WindowResizeEvent& e);
 		bool onFocus(e_WindowFocus& e);
 		bool onLostFocus(e_WindowLostFocus& e);

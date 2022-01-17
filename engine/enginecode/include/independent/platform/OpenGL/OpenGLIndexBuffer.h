@@ -5,7 +5,7 @@
 #include "rendering/indexBuffer.h"
 namespace Engine
 {
-	class OpenGLIndexBuffer : public IndexBuffer
+	class OpenGLIndexBuffer : public IndexBuffer //!< Open GL Index Buffer Class
 	{
 	public:
 		OpenGLIndexBuffer(uint32_t * indices, uint32_t count);

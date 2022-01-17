@@ -23,7 +23,7 @@ namespace Engine
 		}
 	}
 
-	OpenGLVertexArray::OpenGLVertexArray()
+	OpenGLVertexArray::OpenGLVertexArray() //!< Creates a vertex array.
 	{
 		glCreateVertexArrays(1, &m_OpenGL_ID);
 		glBindVertexArray(m_OpenGL_ID);
@@ -35,7 +35,7 @@ namespace Engine
 
 	}
 
-	void OpenGLVertexArray::addVertextBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+	void OpenGLVertexArray::addVertextBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer) //!< Adds VertexBuffer
 	{
 		glBindVertexArray(m_OpenGL_ID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->getRenderID());
@@ -57,7 +57,7 @@ namespace Engine
 		}
 		m_vertexBuffer.push_back(vertexBuffer);
 	}
-	void OpenGLVertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+	void OpenGLVertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer) //!< Sets index buffer
 	{
 		m_indexBuffer = indexBuffer;
 	}

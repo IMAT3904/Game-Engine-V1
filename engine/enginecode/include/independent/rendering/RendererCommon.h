@@ -11,5 +11,5 @@
 
 namespace Engine
 {
-	using SceneWideUniforms = std::unordered_map<const char *, std::pair<ShaderDataType, void *>>;
+	using SceneWideUniforms = std::unordered_map<const char *, std::pair<ShaderDataType, void *>>; //!< Declares SceneWideUniforms in dedicated space.
 }

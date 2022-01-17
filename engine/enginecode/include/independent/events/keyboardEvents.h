@@ -4,8 +4,13 @@
 #include "event.h"
 
 namespace Engine {
+	/**
+\class e_Key
+Keyboard Event Class for different possible events.
+*/
 
-	class e_Key : public Event
+
+	class e_Key : public Event 
 	{
 	protected:
 		e_Key(int32_t keycode) : m_keyCode(keycode) {}

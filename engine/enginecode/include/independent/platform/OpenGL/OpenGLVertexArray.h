@@ -9,7 +9,7 @@
 
 namespace Engine
 {
-	class OpenGLVertexArray : public VertexArray
+	class OpenGLVertexArray : public VertexArray //!< VertexArray Class to contstruct an Open GL vertex array.
 	{
 	public:
 		OpenGLVertexArray();
