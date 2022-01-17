@@ -441,4 +441,4 @@ namespace Engine
 
 ## Check it Out
 
-If you want to see more the Engine, please follow the link at the top of the page to look over the code on GitHub.
+If you want to see more of the Engine, please follow the link at the top of the page to look over the code on GitHub.
