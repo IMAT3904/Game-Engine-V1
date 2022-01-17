@@ -8,7 +8,7 @@ The Engine was built using C++, with the functionality to render 2D & 3D into th
 This was a very basic Engine I was tasked to make but with it came a lot of programming skills and styles that I have learned to adapt into my work.
 i.e. Agnostic Code, Documentation, Encapsulation.
 
-### V 1
+### V1
 
 Version 1 was designed on building the foundations of the engine so that it could be built upon to make more features as well as improve existing ones.
 My personal favourite code from this assignment was the Renderer with its API, 2D & 3D functionality.
